@@ -1,0 +1,26 @@
+.new-task-input {
+    background-color: #9439A60C;
+    width: 200px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.btn-style{
+    background-color : #E1B6D5;
+    height: 30px;
+
+}
+
+.btn-hide{
+    display: none;
+}
+
+.btn-style.focus {
+    opacity: 0.7;
+    background-color : #E1B6D5;
+}
+
+.btn-style:hover{
+    opacity: 0.7;
+    background-color : #E1B6D5;
+}

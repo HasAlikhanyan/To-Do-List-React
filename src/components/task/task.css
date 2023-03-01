@@ -1,0 +1,45 @@
+.card-body {
+    margin: 30px;
+}
+
+.task-body {
+    width: 250px;
+    height: 150px;
+    border: 2px solid black;
+}
+
+.task {
+    background-color: #CC39500C;
+}
+
+.title-checkbox-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-title{
+    opacity: 0.8;
+    width: 90%;
+    height: 27px;
+    overflow-y: auto;
+}
+
+.task-checkbox {
+    margin-right: 20px;
+}
+
+.task-checkbox:checked {
+    background-color: black;
+    opacity: 0.8;
+}
+
+.task-checkbox:hover{
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.task-inner-text{
+    height: 70px;
+    overflow-y: auto;
+    margin: 0 5px 10px 5px;
+}

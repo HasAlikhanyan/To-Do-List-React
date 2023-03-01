@@ -1,0 +1,20 @@
+
+.btn-del-selected-wrapper{
+    display: flex;
+    justify-content: flex-end;
+    margin: 30px 40px;
+}
+
+.btn-delete-selected {
+    font-size: 15px;
+    width: 150px;
+    height: 30px;
+}
+
+.btn-delete-selected-none {
+    display: none;
+}
+
+.btn-disabled {
+    pointer-events: none;
+}
