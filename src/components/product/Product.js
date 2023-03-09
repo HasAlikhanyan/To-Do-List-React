@@ -11,7 +11,7 @@ class Product extends Component {
     constructor (props) {
         super (props);
         this.state = {
-            count: 0
+            count: 1
         }
     }
 
@@ -22,7 +22,7 @@ class Product extends Component {
     }
 
     decreaseProductAmount = () => {
-        if(this.state.count === 0) {
+        if(this.state.count === 1) {
             return;
         }
 
@@ -33,14 +33,29 @@ class Product extends Component {
 
     render() {
         const {name, price, description} = this.props;
-        return <div>
-            
-                Type of product - <Name name = {name}/> <br/> <br/>
-                Price - <Price price = {price}/> <br/> <br/>
-                Description - <Description description = {description}/> <br/> <br/>
-                Amount of product : {this.state.count} <br/> <br/>
-                <ButtonsGroup increaseProductAmount = {this.increaseProductAmount} 
-                                decreaseProductAmount = {this.decreaseProductAmount}/>           
+        return <div  className = "product">  
+            Type of product - <Name name = {name}/> <br/> <br/>
+
+            Description - <Description description = {description}/> <br/> <br/>
+
+            Price of one product - <Price 
+                price = {price} 
+                currency = "$" 
+                count= {1}
+            />
+
+            Total price - <Price 
+                price = {price} 
+                currency = "$" 
+                count = {this.state.count}
+            />
+
+            Amount of product : {this.state.count} <br/> <br/>
+
+            <ButtonsGroup 
+                increaseProductAmount = {this.increaseProductAmount} 
+                decreaseProductAmount = {this.decreaseProductAmount}
+            />           
         </div>      
     }
 }
