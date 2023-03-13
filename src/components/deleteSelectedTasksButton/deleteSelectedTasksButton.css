@@ -1,0 +1,9 @@
+
+.btn-delete-selected-none {
+    display: none;
+}
+
+.btn-disabled {
+    pointer-events: none;
+}
+
