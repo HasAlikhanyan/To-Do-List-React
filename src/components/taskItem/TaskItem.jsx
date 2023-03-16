@@ -1,6 +1,6 @@
 import { Component } from 'react';
 
-import {Col, Card, Form } from 'react-bootstrap';
+import {Col, Card} from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faBoxArchive } from '@fortawesome/free-solid-svg-icons';
@@ -8,9 +8,9 @@ import { faEdit, faBoxArchive } from '@fortawesome/free-solid-svg-icons';
 import './taskItem.css';
 
 class TaskItem extends Component {
-   
+
     render () {
-        const {title, description, onDelete} = this.props;
+        const {title, description, onDelete, addCheckedTasksId} = this.props;
         return (
             <Col lg={4} md={6} xs={12} className = 'justify-content-center mt-3'>
                 <Card className="task">
@@ -20,9 +20,12 @@ class TaskItem extends Component {
                                 className="title">
                                 {title}
                             </Card.Title>
-                            <Form.Check  
-                                className="fa-xl border-dark task-checkbox"
-                                />
+
+                            <input 
+                                className="task-checkbox" 
+                                type={'checkbox'}
+                                onClick={addCheckedTasksId}
+                                />     
                         </div>
                         
                         <Card.Text 
@@ -35,6 +38,7 @@ class TaskItem extends Component {
                                 icon={faEdit} 
                                 className="fas edit-icon"
                             />
+
                             <FontAwesomeIcon  
                                 icon={faBoxArchive} 
                                 className="fa-solid fa-xl mt-1 mb-3 archive-icon"

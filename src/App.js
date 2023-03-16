@@ -15,17 +15,18 @@ class App extends Component {
     super(props);
 
     this.state = {
-        tasks: []
+        tasks: [],
+        tasksId: new Set()
     }
   }
 
   idGenerator = () => {
-    return Math.random().toString() + Math.random.toString();
+    return Math.random(32).toString() + Math.random.toString(32);
   }
 
-  addTask = (title, description, id) => {
+  addTask = (title, description) => {
     const newTask = {
-        title, 
+        title,
         description,
         id : this.idGenerator()
     }
@@ -46,14 +47,39 @@ class App extends Component {
     })
 }
 
+  addCheckedTasksId = (id) => {
+    const newTasksId= new Set(this.state.tasksId);
+    if(newTasksId.has(id)) {
+      newTasksId.delete(id);
+    }
+    else {
+      newTasksId.add(id);
+    }
+
+    this.setState( {
+      tasksId: newTasksId
+    })
+  }
+
+  deleteSelectedTasks = () => {
+    this.state.tasksId.forEach(id => {
+      this.deleteItem(id);
+    })
+    this.setState({
+      tasksId : new Set()
+    })
+  }
+
   render () {
     const taskComponents = this.state.tasks.map((task)=>{
       return (
         <TaskItem 
-        key={task.id}
-        title={task.title} 
-        description={task.description}
-        onDelete = {() => this.deleteItem(task.id)}
+          key={task.id}
+          id={task.id}
+          title={task.title} 
+          description={task.description}
+          onDelete = {() => this.deleteItem(task.id)}
+          addCheckedTasksId = {() => this.addCheckedTasksId(task.id)}
         />
       )
     });
@@ -61,8 +87,14 @@ class App extends Component {
     return (
       <Container className="App">
         <Title/>
-        <TasksAddForm onAdd={this.addTask}/>
-        <DeleteSelectedTasksButton/>
+        <TasksAddForm 
+          onAdd={this.addTask}
+        />
+        <DeleteSelectedTasksButton 
+          onDelete={this.deleteSelectedTasks}
+          tasks={this.state.tasks}
+          tasksId={this.state.tasksId}
+        />
   
         <Row className='justify-content-center task-content'>
             {taskComponents}

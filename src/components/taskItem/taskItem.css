@@ -23,20 +23,12 @@
 }
 
 .task-checkbox {
+    width: 27px;
+    height: 27px;
+    border-radius: 5px;
     margin-right: 10px;
-}
-
-.task-checkbox:checked {
-    background-color: black !important;
-    /* accent-color: rgba(0, 0, 0, 0.5) !important; */
-    opacity: 0.8;
-} 
-
-.task-checkbox:hover{
-    cursor: pointer;
-    opacity: 0.6;
-    accent-color: rgba(0, 0, 0, 0.5) !important;
-
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    cursor: pointer;  
 }
 
 .task-inner-text{

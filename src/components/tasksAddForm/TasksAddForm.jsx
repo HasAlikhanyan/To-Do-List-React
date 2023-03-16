@@ -20,16 +20,28 @@ class TasksAddForm extends Component {
     }
 
     onAdd = (e) => {
-        if (!this.state.title || !this.state.description) return;
+        if (!this.state.title.trim() || !this.state.description.trim()) {
+            return;      
+        }
+        
         this.props.onAdd(this.state.title, this.state.description);
+
         this.setState({
             title: '',
             description: ''
         })
     }
 
+    handleInputKeyDown = (event) => {
+        if(event.keyCode === 13) {
+            this.onAdd();
+        }
+    };
+
     render () {
         const {title, description} = this.state;
+        let hasAnyTitleOrDescription = !title || !description;
+
         return (
             <Row className="justify-content-center">
                 <Col lg={6} xs={10}>
@@ -40,7 +52,8 @@ class TasksAddForm extends Component {
                             name = "title"
                             onChange={this.onChangeValue}
                             value = {title}
-                            placeholder="Input Task"  aria-label=""      
+                            placeholder="Input Task"  aria-label="" 
+                            onKeyDown={this.handleInputKeyDown}     
                         />
                         <Form.Control 
                             type="text" 
@@ -48,11 +61,12 @@ class TasksAddForm extends Component {
                             name = "description"
                             onChange={this.onChangeValue}
                             value = {description}
-                            placeholder="Input Description"    
+                            placeholder="Input Description"  
+                            onKeyDown={this.handleInputKeyDown}  
                         />
 
                         <Button 
-                            className="btn-style"
+                            className={hasAnyTitleOrDescription ? "btn-style btn-disabled" : "btn-style"}
                             type="button"
                             onClick={this.onAdd}
                         >
