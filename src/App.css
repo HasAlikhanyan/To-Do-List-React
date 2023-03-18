@@ -2,3 +2,45 @@
   text-align: center;
   margin-top: 50px;
 }
+
+.btn-style{
+  background-color : #E1B6D5;
+  color:black;
+}
+
+.btn-style:hover {
+  background-color: #E1B6D5 !important;
+  opacity: 0.7;
+}
+
+.btn-modal-save-changes {
+  background-color : #9b1575;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.btn-modal-save-changes:hover {
+  background-color : #9b1575;
+  opacity: 0.7;
+}
+
+.btn-modal-save-changes:active {
+  background-color : #9b1575;
+  opacity: 0.7;
+}
+
+.btn-modal-save-changes:not(:disabled):not(:disabled):active {
+  background-color : #9b1575;
+  opacity: 0.7;
+} 
+
+.modal {
+  margin-top: 100px;
+}
+
+.btn-disabled {
+  pointer-events: none;
+}
+
+.hide {
+  display: none;
+}

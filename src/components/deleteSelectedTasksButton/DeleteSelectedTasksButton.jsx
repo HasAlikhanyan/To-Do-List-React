@@ -1,23 +1,20 @@
 
-import '../tasksAddForm/tasksAddForm.css';
-import "./deleteSelectedTasksButton.css";
-
 import { Button, Nav } from "react-bootstrap";
 
 function DeleteSelectedTasksButton (props) {
-    const {tasks, onDelete, tasksId} = props;
+    const {tasks, selectedTasksId, showModal} = props;
     const hasTasks = !!tasks.length;
-    const hasCheckedTasks = !!tasksId.size;
+    const hasSelectedTasks = !!selectedTasksId.size;
 
     return (
         <Nav className="sticky-top bg-body-tertiary float-end">
             <div className="container-fluid">
                 <Button 
                     className={`btn-style 
-                        ${hasTasks ? "" : "btn-hide"}                     
-                        ${hasCheckedTasks ? "" : "btn-disabled"}`}
+                        ${hasTasks ? "" : "hide"}                     
+                        ${hasSelectedTasks ? "" : "btn-disabled"}`}
                     type="button"
-                    onClick={onDelete}
+                    onClick={showModal}
                 >
                     Delelete selected
                 </Button> 

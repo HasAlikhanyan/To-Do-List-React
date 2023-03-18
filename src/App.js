@@ -9,6 +9,8 @@ import Title from './components/title/Title';
 import TasksAddForm from './components/tasksAddForm/TasksAddForm';
 import TaskItem from './components/taskItem/TaskItem';
 import DeleteSelectedTasksButton from './components/deleteSelectedTasksButton/DeleteSelectedTasksButton';
+import ConfirmDialog from './components/confirmDialog/ConfirmDialog';
+import EditableTask from './components/editableTask/EditableTask';
 
 class App extends Component {
   constructor(props){
@@ -16,7 +18,9 @@ class App extends Component {
 
     this.state = {
         tasks: [],
-        tasksId: new Set()
+        selectedTasksId: new Set(),
+        isOpenConfirmDialogModal: false,
+        isOpenEditableTaskModal: false
     }
   }
 
@@ -47,8 +51,8 @@ class App extends Component {
     })
 }
 
-  addCheckedTasksId = (id) => {
-    const newTasksId= new Set(this.state.tasksId);
+  addSelectedTasksId = (id) => {
+    const newTasksId= new Set(this.state.selectedTasksId);
     if(newTasksId.has(id)) {
       newTasksId.delete(id);
     }
@@ -57,18 +61,50 @@ class App extends Component {
     }
 
     this.setState( {
-      tasksId: newTasksId
+      selectedTasksId: newTasksId
+    })
+  }
+
+  showConfirmDialogModal = () => {
+    this.setState({
+      isOpenConfirmDialogModal: true
+    })
+  }
+
+  hideConfirmDialogModal = () => {
+    this.setState({
+      isOpenConfirmDialogModal: false
+    })
+  }
+
+  showEditableTaskModal = () => {
+    this.setState({
+      isOpenEditableTaskModal: true
+    })
+  }
+
+  hideEditableTaskModal = () => {
+    this.setState({
+      isOpenEditableTaskModal: false
     })
   }
 
   deleteSelectedTasks = () => {
-    this.state.tasksId.forEach(id => {
-      this.deleteItem(id);
-    })
+    const newTasks = [];
+    const {selectedTasksId, tasks} = this.state;
+  
+    tasks.forEach((task)=>{
+          if(!selectedTasksId.has(task.id)){
+            newTasks.push(task);
+          }
+    });
     this.setState({
-      tasksId : new Set()
-    })
+      tasks: newTasks,
+      selectedTasksId: new Set(),
+      isOpenConfirmDialogModal: false
+    });
   }
+
 
   render () {
     const taskComponents = this.state.tasks.map((task)=>{
@@ -79,7 +115,8 @@ class App extends Component {
           title={task.title} 
           description={task.description}
           onDelete = {() => this.deleteItem(task.id)}
-          addCheckedTasksId = {() => this.addCheckedTasksId(task.id)}
+          addSelectedTasksId = {() => this.addSelectedTasksId(task.id)}
+          showEditableTaskModal ={this.showEditableTaskModal}
         />
       )
     });
@@ -91,14 +128,25 @@ class App extends Component {
           onAdd={this.addTask}
         />
         <DeleteSelectedTasksButton 
-          onDelete={this.deleteSelectedTasks}
           tasks={this.state.tasks}
-          tasksId={this.state.tasksId}
+          selectedTasksId={this.state.selectedTasksId}
+          showModal = {this.showConfirmDialogModal}
         />
   
         <Row className='justify-content-center task-content'>
-            {taskComponents}
+          {taskComponents}
         </Row>
+
+        <ConfirmDialog
+          onDelete={this.deleteSelectedTasks}
+          hideModal = {this.hideConfirmDialogModal}
+          isOpenModal = {this.state.isOpenConfirmDialogModal}
+          selectedTasksNumber = {this.state.selectedTasksId.size}
+        />
+        <EditableTask
+          isOpenModal = {this.state.isOpenEditableTaskModal}
+          hideModal = {this.hideEditableTaskModal}
+        />
   
       </Container>
   

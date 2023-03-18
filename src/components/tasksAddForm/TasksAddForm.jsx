@@ -1,7 +1,7 @@
 import { Component } from "react";
 import {Row, Col, InputGroup, Form, Button} from 'react-bootstrap';
 
-import './tasksAddForm.css';
+import styles from'./tasksAddForm.module.css';
 
 class TasksAddForm extends Component {
     constructor (props) {
@@ -48,7 +48,7 @@ class TasksAddForm extends Component {
                     <InputGroup className="mb-5 mt-5">
                         <Form.Control 
                             type="text" 
-                            className="border-secondary new-task-input new-task-text-input" 
+                            className={`border-secondary ${styles.newTaskInput}`}
                             name = "title"
                             onChange={this.onChangeValue}
                             value = {title}
@@ -57,7 +57,7 @@ class TasksAddForm extends Component {
                         />
                         <Form.Control 
                             type="text" 
-                            className="border-secondary mx-2 new-task-input new-task-description-input" 
+                            className={`border-secondary mx-2 ${styles.newTaskInput}`}
                             name = "description"
                             onChange={this.onChangeValue}
                             value = {description}
@@ -72,12 +72,7 @@ class TasksAddForm extends Component {
                         >
                             Add
                         </Button>
-                        <Button 
-                            className="btn-style btn-hide"
-                            type="button"
-                        >
-                            Save
-                        </Button>
+                       
                     </InputGroup>
                 </Col>
             </Row>
