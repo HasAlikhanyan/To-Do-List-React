@@ -20,8 +20,11 @@ class App extends Component {
         tasks: [],
         selectedTasksId: new Set(),
         isOpenConfirmDialogModal: false,
-        isOpenEditableTaskModal: false
+        isOpenEditableTaskModal: false,
+        editableTask: {},
+        editableTaskIndex: -1
     }
+    
   }
 
   idGenerator = () => {
@@ -46,10 +49,18 @@ class App extends Component {
   deleteItem = (id) => {
     this.setState(({tasks}) => {
         return {
-            tasks : tasks.filter(task => task.id !== id)
+            tasks : tasks.filter(task => task.id !== id),
+            
         }
     })
-}
+    if(this.state.selectedTasksId.has(id)) {
+      this.setState(({selectedTasksId}) => {
+        return {
+            selectedTasksId : selectedTasksId.delete(id),
+        }
+      })
+    }   
+  }
 
   addSelectedTasksId = (id) => {
     const newTasksId= new Set(this.state.selectedTasksId);
@@ -77,10 +88,12 @@ class App extends Component {
     })
   }
 
-  showEditableTaskModal = () => {
+  showEditableTaskModal = (task, index) => {
     this.setState({
-      isOpenEditableTaskModal: true
-    })
+      isOpenEditableTaskModal: true,
+      editableTask: task,
+      editableTaskIndex: index
+    })    
   }
 
   hideEditableTaskModal = () => {
@@ -88,6 +101,23 @@ class App extends Component {
       isOpenEditableTaskModal: false
     })
   }
+
+  changeEditableTask = (title, description, id) => {
+    const changedTask = {
+      title,
+      description,
+      id
+    }
+    const tasksCopy = [...this.state.tasks];
+    const transformTask = tasksCopy.splice(this.state.editableTaskIndex, 1, changedTask);
+
+    this.setState({
+      tasks: tasksCopy,
+      editableTask: {},
+      editableTaskIndex: -1
+    })
+  }
+
 
   deleteSelectedTasks = () => {
     const newTasks = [];
@@ -105,9 +135,8 @@ class App extends Component {
     });
   }
 
-
   render () {
-    const taskComponents = this.state.tasks.map((task)=>{
+    const taskComponents = this.state.tasks.map((task, i)=>{
       return (
         <TaskItem 
           key={task.id}
@@ -116,7 +145,7 @@ class App extends Component {
           description={task.description}
           onDelete = {() => this.deleteItem(task.id)}
           addSelectedTasksId = {() => this.addSelectedTasksId(task.id)}
-          showEditableTaskModal ={this.showEditableTaskModal}
+          showEditableTaskModal ={() => this.showEditableTaskModal(task, i)}
         />
       )
     });
@@ -146,6 +175,8 @@ class App extends Component {
         <EditableTask
           isOpenModal = {this.state.isOpenEditableTaskModal}
           hideModal = {this.hideEditableTaskModal}
+          task = {this.state.editableTask}
+          changeEditableTask = {this.changeEditableTask}
         />
   
       </Container>

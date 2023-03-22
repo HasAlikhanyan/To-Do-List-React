@@ -1,9 +1,9 @@
-import { Component } from "react";
+import { PureComponent } from "react";
 import {Row, Col, InputGroup, Form, Button} from 'react-bootstrap';
 
 import styles from'./tasksAddForm.module.css';
 
-class TasksAddForm extends Component {
+class TasksAddForm extends PureComponent {
     constructor (props) {
         super(props);
 
@@ -72,7 +72,7 @@ class TasksAddForm extends Component {
                         >
                             Add
                         </Button>
-                       
+                
                     </InputGroup>
                 </Col>
             </Row>

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { PureComponent } from 'react';
 
 import {Col, Card} from 'react-bootstrap';
 
@@ -7,8 +7,7 @@ import { faEdit, faBoxArchive } from '@fortawesome/free-solid-svg-icons';
 
 import styles from'./taskItem.module.css';
 
-class TaskItem extends Component {
-
+class TaskItem extends PureComponent {
     render () {
         const {title, description, onDelete, addSelectedTasksId, showEditableTaskModal} = this.props;
         return (

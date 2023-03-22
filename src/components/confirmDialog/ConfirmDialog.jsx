@@ -33,6 +33,4 @@ function ConfirmDialog (props) {
         );
     }
 
-   
-
 export default ConfirmDialog;
