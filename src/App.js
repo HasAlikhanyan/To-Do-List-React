@@ -12,6 +12,8 @@ import DeleteSelectedTasksButton from './components/deleteSelectedTasksButton/De
 import ConfirmDialog from './components/confirmDialog/ConfirmDialog';
 import EditableTask from './components/editableTask/EditableTask';
 
+import Counter from './components/counter/Counter';
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -109,7 +111,7 @@ class App extends Component {
       id
     }
     const tasksCopy = [...this.state.tasks];
-    const transformTask = tasksCopy.splice(this.state.editableTaskIndex, 1, changedTask);
+    tasksCopy.splice(this.state.editableTaskIndex, 1, changedTask);
 
     this.setState({
       tasks: tasksCopy,
@@ -152,6 +154,8 @@ class App extends Component {
 
     return (
       <Container className="App">
+        <Counter/>
+
         <Title/>
         <TasksAddForm 
           onAdd={this.addTask}
