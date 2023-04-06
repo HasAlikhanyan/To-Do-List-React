@@ -5,15 +5,12 @@ function ConfirmDialog (props) {
         return (
             <Modal className='modal'
                 size="sm"
-                show={props.isOpenModal}
+                show={true}
+                onHide = {props.hideModal}
             >
-                <Modal.Header
-                    onClick={props.hideModal}
-                    closeButton
-                >
-                </Modal.Header>
+                <Modal.Header closeButton></Modal.Header>
                 <Modal.Body>
-                    Are you sure to delete the selected {props.selectedTasksNumber} tasks?
+                    Are you sure to delete the selected {props.selectedTasksNumber} {props.selectedTasksNumber > 1 ? "tasks" : "task"}?
                 </Modal.Body>
                 <Modal.Footer className="d-flex justify-content-evenly">
                     <Button

@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-import { Component } from 'react';
+import { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import {Row} from 'react-bootstrap';
 
@@ -12,181 +12,167 @@ import DeleteSelectedTasksButton from './components/deleteSelectedTasksButton/De
 import ConfirmDialog from './components/confirmDialog/ConfirmDialog';
 import EditableTask from './components/editableTask/EditableTask';
 
-import Counter from './components/counter/Counter';
+function App () {
 
-class App extends Component {
-  constructor(props){
-    super(props);
+  const [tasks, setTasks] = useState([]);
+  const [selectedTasksId, setSelectedTasksId] = useState(new Set());
+  const [isOpenConfirmDialogModal, setIsOpenConfirmDialogModal] = useState(false);
+  const [isOpenEditableTaskModal, setIsOpenEditableTaskModal] = useState(false);
+  const [editableTask, setEditableTask] = useState({});
+  const [editableTaskIndex, setEditableTaskIndex] = useState(-1);
 
-    this.state = {
-        tasks: [],
-        selectedTasksId: new Set(),
-        isOpenConfirmDialogModal: false,
-        isOpenEditableTaskModal: false,
-        editableTask: {},
-        editableTaskIndex: -1
-    }
+
+  // constructor(props){
+  //   super(props);
+
+  //   this.state = {
+  //       // tasks: [],
+  //       // selectedTasksId: new Set(),
+  //       // isOpenConfirmDialogModal: false,
+  //       // isOpenEditableTaskModal: false,
+  //       editableTask: {},
+  //       editableTaskIndex: -1
+  //   }
     
-  }
+  // }
 
-  idGenerator = () => {
-    return Math.random(32).toString() + Math.random.toString(32);
-  }
-
-  addTask = (title, description) => {
+  const addTask = (title, description) => {
+    const apiUrl = 'http://localhost:3001/task';
     const newTask = {
         title,
         description,
-        id : this.idGenerator()
-    }
+    };
 
-    this.setState(({tasks}) => {
-        const newTasksArr = [...tasks, newTask];
-        return {
-            tasks: newTasksArr
-        }
+    fetch(apiUrl, {
+      method: "POST",
+      body: JSON.stringify(newTask),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((result) => result.json())
+    .then((task) => {
+      const tasksCopy = [...tasks, task];
+      setTasks(tasksCopy);
     });
   } 
 
-  deleteItem = (id) => {
-    this.setState(({tasks}) => {
-        return {
-            tasks : tasks.filter(task => task.id !== id),
-            
-        }
-    })
-    if(this.state.selectedTasksId.has(id)) {
-      this.setState(({selectedTasksId}) => {
-        return {
-            selectedTasksId : selectedTasksId.delete(id),
-        }
-      })
+  const deleteItem = (taskId) => {
+    const newTasks = tasks.filter(task => task._id !== taskId);
+    setTasks(newTasks);
+  
+    if(selectedTasksId.has(taskId)) {
+      const newSelectedTasksId = new Set(selectedTasksId);
+      newSelectedTasksId.delete(taskId);
+      setSelectedTasksId(newSelectedTasksId);
     }   
   }
 
-  addSelectedTasksId = (id) => {
-    const newTasksId= new Set(this.state.selectedTasksId);
-    if(newTasksId.has(id)) {
-      newTasksId.delete(id);
+  const addSelectedTasksId = (taskId) => {
+    const newTasksId= new Set(selectedTasksId);
+    if(newTasksId.has(taskId)) {
+      newTasksId.delete(taskId);
     }
     else {
-      newTasksId.add(id);
+      newTasksId.add(taskId);
     }
 
-    this.setState( {
-      selectedTasksId: newTasksId
-    })
+    setSelectedTasksId(newTasksId);
   }
 
-  showConfirmDialogModal = () => {
-    this.setState({
-      isOpenConfirmDialogModal: true
-    })
+  const toggleConfirmDialogModal = () => {
+    setIsOpenConfirmDialogModal(!isOpenConfirmDialogModal);
+  }
+  
+  const showEditableTaskModal = (task, index) => {
+    setIsOpenEditableTaskModal(true);
+    setEditableTask(task);
+    setEditableTaskIndex(index);   
   }
 
-  hideConfirmDialogModal = () => {
-    this.setState({
-      isOpenConfirmDialogModal: false
-    })
+  const hideEditableTaskModal = () => {
+    setIsOpenEditableTaskModal(false);
   }
 
-  showEditableTaskModal = (task, index) => {
-    this.setState({
-      isOpenEditableTaskModal: true,
-      editableTask: task,
-      editableTaskIndex: index
-    })    
-  }
-
-  hideEditableTaskModal = () => {
-    this.setState({
-      isOpenEditableTaskModal: false
-    })
-  }
-
-  changeEditableTask = (title, description, id) => {
+  const changeEditableTask = (title, description, _id) => {
     const changedTask = {
       title,
       description,
-      id
+      _id,
     }
-    const tasksCopy = [...this.state.tasks];
-    tasksCopy.splice(this.state.editableTaskIndex, 1, changedTask);
+    const tasksCopy = [...tasks];
+    tasksCopy.splice(editableTaskIndex, 1, changedTask);
 
-    this.setState({
-      tasks: tasksCopy,
-      editableTask: {},
-      editableTaskIndex: -1
-    })
+    setTasks(tasksCopy);
+    setEditableTask({});
+    setEditableTaskIndex(-1)
   }
 
 
-  deleteSelectedTasks = () => {
-    const newTasks = [];
-    const {selectedTasksId, tasks} = this.state;
-  
+  const deleteSelectedTasks = () => {
+    const newTasks = [];  
     tasks.forEach((task)=>{
-          if(!selectedTasksId.has(task.id)){
+          if(!selectedTasksId.has(task._id)){
             newTasks.push(task);
           }
     });
-    this.setState({
-      tasks: newTasks,
-      selectedTasksId: new Set(),
-      isOpenConfirmDialogModal: false
-    });
+
+    setTasks(newTasks);
+    setSelectedTasksId(new Set());
+    setIsOpenConfirmDialogModal(false);
   }
 
-  render () {
-    const taskComponents = this.state.tasks.map((task, i)=>{
+    const taskComponents = tasks.map((task, i)=>{
       return (
         <TaskItem 
-          key={task.id}
-          id={task.id}
+          key={task._id}
+          id={task._id}
           title={task.title} 
           description={task.description}
-          onDelete = {() => this.deleteItem(task.id)}
-          addSelectedTasksId = {() => this.addSelectedTasksId(task.id)}
-          showEditableTaskModal ={() => this.showEditableTaskModal(task, i)}
+          onDelete = {() => deleteItem(task._id)}
+          addSelectedTasksId = {() => addSelectedTasksId(task._id)}
+          showEditableTaskModal ={() => showEditableTaskModal(task, i)}
         />
       )
     });
 
     return (
       <Container className="App">
-        <Counter/>
-
         <Title/>
         <TasksAddForm 
-          onAdd={this.addTask}
+          onAdd={addTask}
         />
         <DeleteSelectedTasksButton 
-          tasks={this.state.tasks}
-          selectedTasksId={this.state.selectedTasksId}
-          showModal = {this.showConfirmDialogModal}
+          tasks={tasks}
+          selectedTasksId={selectedTasksId}
+          showModal = {toggleConfirmDialogModal}
+          onClick = {toggleConfirmDialogModal}
         />
   
         <Row className='justify-content-center task-content'>
           {taskComponents}
         </Row>
 
-        <ConfirmDialog
-          onDelete={this.deleteSelectedTasks}
-          hideModal = {this.hideConfirmDialogModal}
-          isOpenModal = {this.state.isOpenConfirmDialogModal}
-          selectedTasksNumber = {this.state.selectedTasksId.size}
-        />
-        <EditableTask
-          isOpenModal = {this.state.isOpenEditableTaskModal}
-          hideModal = {this.hideEditableTaskModal}
-          task = {this.state.editableTask}
-          changeEditableTask = {this.changeEditableTask}
-        />
+        {isOpenConfirmDialogModal && 
+          <ConfirmDialog
+            onDelete={deleteSelectedTasks}
+            hideModal = {toggleConfirmDialogModal}
+            selectedTasksNumber = {selectedTasksId.size}
+          />
+        }
+
+        {isOpenEditableTaskModal && 
+          <EditableTask
+            isOpenModal = {isOpenEditableTaskModal}
+            hideModal = {hideEditableTaskModal}
+            task = {editableTask}
+            changeEditableTask = {changeEditableTask}
+          />
+        }
   
       </Container>
   
     );
   }
-}
 
 export default App;

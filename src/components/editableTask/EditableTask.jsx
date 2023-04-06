@@ -44,12 +44,10 @@ class EditableTask extends PureComponent {
         return (
             <Modal
                 size="md"
-                show={this.props.isOpenModal}
+                show={true}
+                onHide={this.cancelChanges}
             >
-                <Modal.Header 
-                    closeButton
-                    onClick={this.cancelChanges}
-                >
+                <Modal.Header closeButton>
                     <Modal.Title className={styles.title}>Input changes</Modal.Title>
                 </Modal.Header>
     
