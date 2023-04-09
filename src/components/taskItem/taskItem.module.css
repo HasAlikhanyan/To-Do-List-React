@@ -1,0 +1,59 @@
+
+.task {
+    height: 190px;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+    background-color: #CC39500C;
+}
+
+.task-card-body {
+    margin: 30px;
+}
+
+.titleCheckboxWrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.title{
+    opacity: 0.8;
+    height: 27px;
+    overflow-y: auto;
+    margin-right: 5px;
+}
+
+.taskCheckbox {
+    width: 27px;
+    height: 27px;
+    border-radius: 5px;
+    margin-right: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    cursor: pointer;  
+}
+
+.taskInnerText{
+    height: 70px;
+    overflow-y: auto;
+    margin: 0 5px 10px 5px;
+}
+
+.iconsWrapper{
+    display: flex;
+    justify-content: space-between;
+}
+
+.archiveIcon:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.editIcon {
+    font-size: 18px;
+} 
+
+.editIcon:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+
+
