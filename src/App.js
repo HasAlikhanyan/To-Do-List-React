@@ -129,7 +129,7 @@ function App () {
       <Container className="App">
         <Title/>
         <TasksAddForm 
-          onAdd={addTask}
+          showEditableTaskModal= {showEditableTaskModal}
         />
         <DeleteSelectedTasksButton 
           tasks={tasks}
@@ -156,6 +156,7 @@ function App () {
             hideModal = {hideEditableTaskModal}
             task = {editableTask}
             changeEditableTask = {changeEditableTask}
+            onAdd={addTask}
           />
         }
   

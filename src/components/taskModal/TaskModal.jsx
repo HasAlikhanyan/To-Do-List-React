@@ -11,17 +11,37 @@ class TaskModal extends PureComponent {
         super(props);
 
         this.state = {
-            title: "",
-            description: ""
+            title: this.props.task.title,
+            description: this.props.task.description
         }
     }
-    
+
     onChangeValue = (e) => {
         this.setState({  
             [e.target.name] : e.target.value 
-        })        
+        })
     }
 
+    onAdd = (e) => {
+        if (!this.state.title.trim() || !this.state.description.trim()) {
+            return;      
+        }
+
+        this.props.onAdd(this.state.title, this.state.description);
+
+        this.setState({
+            title: '',
+            description: ''
+        })
+        this.props.hideModal();  
+    }
+
+    handleInputKeyDown = (event) => {
+        if(event.keyCode === 13) {
+            this.onAdd();
+        }
+    };
+    
     cancelChanges = () => {
         this.setState({
             title : "",
@@ -31,10 +51,11 @@ class TaskModal extends PureComponent {
     }
 
     saveChanges = () => {
+        if (!this.state.title.trim() || !this.state.description.trim()) {
+            return;      
+        }
         this.props.hideModal();
-        this.props.changeEditableTask(this.state.title || this.props.task.title, 
-                                        this.state.description || this.props.task.description, 
-                                        this.props.task._id);
+        this.props.changeEditableTask(this.state.title, this.state.description, this.props.task._id);
         this.setState({
             title : "",
             description: ""
@@ -50,7 +71,7 @@ class TaskModal extends PureComponent {
                 onHide={this.cancelChanges}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title className={styles.title}>Input changes</Modal.Title>
+                    <Modal.Title className={styles.title}>Input Task</Modal.Title>
                 </Modal.Header>
     
                 <Modal.Body>
@@ -58,16 +79,15 @@ class TaskModal extends PureComponent {
                         className={`mb-2 ${styles.textArea}`}
                         as="textarea"
                         name = "title"
-                        value={title ? title: this.props.task.title}
+                        value={title}
                         onChange={this.onChangeValue}
                     />
                     <Form.Control
                         className={styles.textArea}
                         as="textarea"
                         name = "description"
-                        value={description ? description : this.props.task.description}
+                        value={description}
                         onChange={this.onChangeValue}
-
                     />
                 </Modal.Body>
             
@@ -80,9 +100,9 @@ class TaskModal extends PureComponent {
                     </Button>
                     <Button 
                         className='btn-modal-save-changes'
-                        onClick = {this.saveChanges}
+                        onClick = {this.props.task.title ? this.saveChanges : this.onAdd}
                     >
-                        Save Changes
+                        Save
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -91,11 +111,11 @@ class TaskModal extends PureComponent {
 } 
 
 TaskModal.propTypes = {
+    onAdd: Proptypes.func.isRequired,
     isOpenModal: Proptypes.bool.isRequired,
     hideModal: Proptypes.func.isRequired,
     changeEditableTask: Proptypes.func.isRequired,
     task: Proptypes.object.isRequired
 }
     
-
 export default TaskModal;
