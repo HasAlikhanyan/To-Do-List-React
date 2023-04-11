@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import {Row} from 'react-bootstrap';
 
@@ -10,7 +10,10 @@ import TasksAddForm from './components/tasksAddForm/TasksAddForm';
 import TaskItem from './components/taskItem/TaskItem';
 import DeleteSelectedTasksButton from './components/deleteSelectedTasksButton/DeleteSelectedTasksButton';
 import ConfirmDialog from './components/confirmDialog/ConfirmDialog';
-import EditableTask from './components/editableTask/EditableTask';
+import TaskModal from './components/taskModal/TaskModal';
+import TaskApi from './api/taskApi';
+
+const taskApi = new TaskApi();
 
 function App () {
 
@@ -22,35 +25,22 @@ function App () {
   const [editableTaskIndex, setEditableTaskIndex] = useState(-1);
 
 
-  // constructor(props){
-  //   super(props);
-
-  //   this.state = {
-  //       // tasks: [],
-  //       // selectedTasksId: new Set(),
-  //       // isOpenConfirmDialogModal: false,
-  //       // isOpenEditableTaskModal: false,
-  //       editableTask: {},
-  //       editableTaskIndex: -1
-  //   }
-    
-  // }
+  useEffect(() => {
+    taskApi
+    .getAll()
+    .then((tasks) => {
+      setTasks(tasks);
+    });
+  }, []);
 
   const addTask = (title, description) => {
-    const apiUrl = 'http://localhost:3001/task';
     const newTask = {
         title,
         description,
     };
 
-    fetch(apiUrl, {
-      method: "POST",
-      body: JSON.stringify(newTask),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    .then((result) => result.json())
+    taskApi
+    .add(newTask)
     .then((task) => {
       const tasksCopy = [...tasks, task];
       setTasks(tasksCopy);
@@ -126,7 +116,6 @@ function App () {
       return (
         <TaskItem 
           key={task._id}
-          id={task._id}
           title={task.title} 
           description={task.description}
           onDelete = {() => deleteItem(task._id)}
@@ -144,7 +133,7 @@ function App () {
         />
         <DeleteSelectedTasksButton 
           tasks={tasks}
-          selectedTasksId={selectedTasksId}
+          selectedTasks={selectedTasksId.size}
           showModal = {toggleConfirmDialogModal}
           onClick = {toggleConfirmDialogModal}
         />
@@ -162,7 +151,7 @@ function App () {
         }
 
         {isOpenEditableTaskModal && 
-          <EditableTask
+          <TaskModal
             isOpenModal = {isOpenEditableTaskModal}
             hideModal = {hideEditableTaskModal}
             task = {editableTask}

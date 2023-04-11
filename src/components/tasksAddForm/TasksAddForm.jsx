@@ -1,4 +1,6 @@
 import { PureComponent } from "react";
+import PropTypes from 'prop-types';
+
 import {Row, Col, InputGroup, Form, Button} from 'react-bootstrap';
 
 import styles from'./tasksAddForm.module.css';
@@ -78,6 +80,10 @@ class TasksAddForm extends PureComponent {
             </Row>
         )
     }
+}
+
+TasksAddForm.propTypes = {
+    onAdd: PropTypes.func.isRequired
 }
 
 export default TasksAddForm;

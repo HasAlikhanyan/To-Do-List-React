@@ -1,10 +1,12 @@
 import { PureComponent } from 'react';
+import Proptypes from 'prop-types';
+
 import {Button, Form} from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 
-import styles from './editableTask.module.css'
+import styles from './taskModal.module.css'
 
-class EditableTask extends PureComponent {
+class TaskModal extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -32,7 +34,7 @@ class EditableTask extends PureComponent {
         this.props.hideModal();
         this.props.changeEditableTask(this.state.title || this.props.task.title, 
                                         this.state.description || this.props.task.description, 
-                                        this.props.task.id);
+                                        this.props.task._id);
         this.setState({
             title : "",
             description: ""
@@ -87,6 +89,13 @@ class EditableTask extends PureComponent {
         );
     }       
 } 
+
+TaskModal.propTypes = {
+    isOpenModal: Proptypes.bool.isRequired,
+    hideModal: Proptypes.func.isRequired,
+    changeEditableTask: Proptypes.func.isRequired,
+    task: Proptypes.object.isRequired
+}
     
 
-export default EditableTask;
+export default TaskModal;

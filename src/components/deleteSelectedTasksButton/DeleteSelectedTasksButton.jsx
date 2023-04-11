@@ -1,10 +1,11 @@
+import Proptypes from 'prop-types';
 
 import { Button, Nav } from "react-bootstrap";
 
 function DeleteSelectedTasksButton (props) {
-    const {tasks, selectedTasksId, showModal} = props;
+    const {tasks, selectedTasks, showModal} = props;
     const hasTasks = !!tasks.length;
-    const hasSelectedTasks = !!selectedTasksId.size;
+    const hasSelectedTasks = !!selectedTasks;
 
     return (
         <Nav className="sticky-top bg-body-tertiary float-end">
@@ -21,6 +22,12 @@ function DeleteSelectedTasksButton (props) {
             </div>
         </Nav>
     )
+}
+
+DeleteSelectedTasksButton.propTypes = {
+    tasks: Proptypes.array.isRequired,
+    selectedTasks: Proptypes.number.isRequired,
+    showModal: Proptypes.func
 }
 
 export default DeleteSelectedTasksButton;
