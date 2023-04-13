@@ -5,3 +5,8 @@
 .textArea {
     height: 70px;
 }
+
+.invalid, .invalid:focus{
+    outline: 1px solid red;
+}
+

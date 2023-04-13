@@ -9,7 +9,7 @@ import { faEdit, faBoxArchive } from '@fortawesome/free-solid-svg-icons';
 import styles from'./taskItem.module.css';
 
 function TaskItem(props) {
-    const {title, description, onDelete, addSelectedTasksId, showEditableTaskModal} = props;
+    const {title, description, date, onDelete, addSelectedTasksId, showEditableTaskModal} = props;
     return (
         <Col lg={4} md={6} xs={12} className = 'justify-content-center mt-3'>
             <Card className={styles.task}>
@@ -32,6 +32,7 @@ function TaskItem(props) {
                         {description}
                     </Card.Text>
 
+
                     <div className={`${styles.iconsWrapper} mt-2`}>
                         <FontAwesomeIcon  
                             icon={faEdit} 
@@ -46,6 +47,9 @@ function TaskItem(props) {
                         />
                     </div>
 
+                  
+                
+
                 </Card.Body>
             </Card>
         </Col>
@@ -54,7 +58,7 @@ function TaskItem(props) {
 
 TaskItem.propTypes = {
     title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string,
     onDelete: PropTypes.func.isRequired,
     addSelectedTasksId: PropTypes.func.isRequired,
     showEditableTaskModal: PropTypes.func.isRequired

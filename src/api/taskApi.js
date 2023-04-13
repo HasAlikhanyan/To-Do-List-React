@@ -14,7 +14,13 @@ class TaskApi {
         }
 
         return fetch(taskApiUrl, params)
-        .then((result) => result.json());
+        .then((result) => result.json())
+        .then((data) => {
+            if(data.error) {
+                throw data.error;
+            }
+            return data;
+        });
     }
 
     getAll() {

@@ -1,9 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "react-datepicker/dist/react-datepicker.css";
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 import { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import {Row} from 'react-bootstrap';
+
+import { ToastContainer, toast } from 'react-toastify';
 
 import Title from './components/title/Title';
 import TasksAddForm from './components/tasksAddForm/TasksAddForm';
@@ -33,10 +37,11 @@ function App () {
     });
   }, []);
 
-  const addTask = (title, description) => {
+  const addTask = (title, description, date) => {
     const newTask = {
-        title,
-        description,
+        title: title.trim(),
+        description: description.trim(),
+        date: date.toISOString().slice(0, 10)
     };
 
     taskApi
@@ -44,6 +49,10 @@ function App () {
     .then((task) => {
       const tasksCopy = [...tasks, task];
       setTasks(tasksCopy);
+      toast.success('The task has been added successfully!');
+    })
+    .catch((err) => {
+      toast.error(err.message);
     });
   } 
 
@@ -84,10 +93,11 @@ function App () {
     setIsOpenEditableTaskModal(false);
   }
 
-  const changeEditableTask = (title, description, _id) => {
+  const changeEditableTask = (title, description, date, _id) => {
     const changedTask = {
       title,
       description,
+      date,
       _id,
     }
     const tasksCopy = [...tasks];
@@ -118,6 +128,7 @@ function App () {
           key={task._id}
           title={task.title} 
           description={task.description}
+          date={task.date}
           onDelete = {() => deleteItem(task._id)}
           addSelectedTasksId = {() => addSelectedTasksId(task._id)}
           showEditableTaskModal ={() => showEditableTaskModal(task, i)}
@@ -152,13 +163,25 @@ function App () {
 
         {isOpenEditableTaskModal && 
           <TaskModal
-            isOpenModal = {isOpenEditableTaskModal}
             hideModal = {hideEditableTaskModal}
             task = {editableTask}
             changeEditableTask = {changeEditableTask}
-            onAdd={addTask}
+            addTask={addTask}
           />
         }
+
+        <ToastContainer
+          position="bottom-left"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
   
       </Container>
   

@@ -1,121 +1,116 @@
-import { PureComponent } from 'react';
+import { memo, useState } from 'react';
 import Proptypes from 'prop-types';
+import DatePicker from "react-datepicker";
 
 import {Button, Form} from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 
-import styles from './taskModal.module.css'
+import styles from './taskModal.module.css';
 
-class TaskModal extends PureComponent {
-    constructor(props) {
-        super(props);
+function TaskModal(props) {
+    const {addTask, hideModal, changeEditableTask, task} = props;
 
-        this.state = {
-            title: this.props.task.title,
-            description: this.props.task.description
-        }
-    }
+    const [title, setTitle] = useState(task.title);
+    const [description, setDescription] = useState(task.description);  
+    const [date, setDate] = useState(new Date());   
+    const [isTitleValid, setIsTitleValid] = useState(false);
 
-    onChangeValue = (e) => {
-        this.setState({  
-            [e.target.name] : e.target.value 
-        })
-    }
-
-    onAdd = (e) => {
-        if (!this.state.title.trim() || !this.state.description.trim()) {
+    const onAdd = () => {
+        if (!title) {
             return;      
         }
 
-        this.props.onAdd(this.state.title, this.state.description);
+        addTask(title, description, date);
 
-        this.setState({
-            title: '',
-            description: ''
-        })
-        this.props.hideModal();  
-    }
+        setTitle("");
+        setDescription("");
 
-    handleInputKeyDown = (event) => {
-        if(event.keyCode === 13) {
-            this.onAdd();
-        }
+        hideModal();  
     };
     
-    cancelChanges = () => {
-        this.setState({
-            title : "",
-            description: ""
-        })
-        this.props.hideModal();
-    }
+    const cancelChanges = () => {
+        setTitle("");
+        setDescription("");
 
-    saveChanges = () => {
-        if (!this.state.title.trim() || !this.state.description.trim()) {
+        hideModal();
+    };
+
+    const saveChanges = () => {
+        if (!title) {
             return;      
         }
-        this.props.hideModal();
-        this.props.changeEditableTask(this.state.title, this.state.description, this.props.task._id);
-        this.setState({
-            title : "",
-            description: ""
-        })
+
+        changeEditableTask(title, description, date, task._id);
+        setTitle("");
+        setDescription("");
+        hideModal();
+    };
+
+    const onTitleChange = (e)=> {
+        const {value} = e.target;
+        const trimmedTitle = value.trim();
+
+        setIsTitleValid(!!trimmedTitle);
+
+        setTitle(value);
     }
 
-    render() {
-        const {title, description} = this.state;
-        return (
-            <Modal
-                size="md"
-                show={true}
-                onHide={this.cancelChanges}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title className={styles.title}>Input Task</Modal.Title>
-                </Modal.Header>
-    
-                <Modal.Body>
-                    <Form.Control 
-                        className={`mb-2 ${styles.textArea}`}
-                        as="textarea"
-                        name = "title"
-                        value={title}
-                        onChange={this.onChangeValue}
-                    />
-                    <Form.Control
-                        className={styles.textArea}
-                        as="textarea"
-                        name = "description"
-                        value={description}
-                        onChange={this.onChangeValue}
-                    />
-                </Modal.Body>
-            
-                <Modal.Footer className="d-flex justify-content-evenly">
-                    <Button 
-                        variant='secondary'
-                        onClick={this.cancelChanges}                      
-                    >
-                        Cancel
-                    </Button>
-                    <Button 
-                        className='btn-modal-save-changes'
-                        onClick = {this.props.task.title ? this.saveChanges : this.onAdd}
-                    >
-                        Save
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        );
-    }       
-} 
+    return (
+        <Modal
+            size="md"
+            show={true}
+            onHide={cancelChanges}
+        >
+            <Modal.Header closeButton>
+                <Modal.Title className={styles.title}>Input Task</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+                <Form.Control 
+                    className={`mb-3 ${!isTitleValid ? styles.invalid : ""}`}
+                    placeholder='title'
+                    value={title}
+                    onChange={onTitleChange}
+
+                />
+                <Form.Control
+                    className={`mb-3 ${styles.textArea}`}
+                    as="textarea"
+                    placeholder='description'
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                />
+                <h6 className= 'mx-1'>Deadline</h6>
+                <DatePicker
+                    className= 'mx-1'
+                    showIcon
+                    selected={date}
+                    onChange={setDate}
+                />
+            </Modal.Body>
+        
+            <Modal.Footer className="d-flex justify-content-evenly">
+                <Button 
+                    variant='secondary'
+                    onClick={cancelChanges}                      
+                >
+                    Cancel
+                </Button>
+                <Button 
+                    className={`btn-modal-save-changes btn-style `}
+                    onClick = {task.title ? saveChanges : onAdd}
+                >
+                    Save
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    );
+}
 
 TaskModal.propTypes = {
-    onAdd: Proptypes.func.isRequired,
-    isOpenModal: Proptypes.bool.isRequired,
+    addTask: Proptypes.func.isRequired,
     hideModal: Proptypes.func.isRequired,
     changeEditableTask: Proptypes.func.isRequired,
-    task: Proptypes.object.isRequired
+    task: Proptypes.object
 }
-    
-export default TaskModal;
+export default memo(TaskModal);
