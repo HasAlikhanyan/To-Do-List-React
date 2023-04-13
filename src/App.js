@@ -39,9 +39,9 @@ function App () {
 
   const addTask = (title, description, date) => {
     const newTask = {
-        title: title.trim(),
-        description: description.trim(),
-        date: date.toISOString().slice(0, 10)
+        title,
+        description,
+        date
     };
 
     taskApi

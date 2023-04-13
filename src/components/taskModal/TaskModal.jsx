@@ -10,17 +10,17 @@ import styles from './taskModal.module.css';
 function TaskModal(props) {
     const {addTask, hideModal, changeEditableTask, task} = props;
 
-    const [title, setTitle] = useState(task.title);
-    const [description, setDescription] = useState(task.description);  
+    const [title="", setTitle] = useState(task.title);
+    const [description="", setDescription] = useState(task.description);  
     const [date, setDate] = useState(new Date());   
     const [isTitleValid, setIsTitleValid] = useState(false);
 
     const onAdd = () => {
-        if (!title) {
+        if (!title.trim()) {
             return;      
         }
 
-        addTask(title, description, date);
+        addTask(title, description, date.toISOString().slice(0, 10));
 
         setTitle("");
         setDescription("");
@@ -36,11 +36,11 @@ function TaskModal(props) {
     };
 
     const saveChanges = () => {
-        if (!title) {
+        if (!title.trim()) {
             return;      
         }
 
-        changeEditableTask(title, description, date, task._id);
+        changeEditableTask(title, description, date.toISOString().slice(0, 10), task._id);
         setTitle("");
         setDescription("");
         hideModal();
@@ -71,7 +71,6 @@ function TaskModal(props) {
                     placeholder='title'
                     value={title}
                     onChange={onTitleChange}
-
                 />
                 <Form.Control
                     className={`mb-3 ${styles.textArea}`}

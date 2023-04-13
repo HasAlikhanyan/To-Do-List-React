@@ -32,7 +32,6 @@ function TaskItem(props) {
                         {description}
                     </Card.Text>
 
-
                     <div className={`${styles.iconsWrapper} mt-2`}>
                         <FontAwesomeIcon  
                             icon={faEdit} 
@@ -46,6 +45,8 @@ function TaskItem(props) {
                             onClick={onDelete}
                         />
                     </div>
+                    <div>Deadline: {date}</div>
+
 
                   
                 
