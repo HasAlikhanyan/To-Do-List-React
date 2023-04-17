@@ -1,26 +1,35 @@
-import { memo, useState } from 'react';
+import { memo, useState, useEffect} from 'react';
 import Proptypes from 'prop-types';
 import DatePicker from "react-datepicker";
 
 import {Button, Form} from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
+import {formatDate} from '../../helpers/helpers';
 
 import styles from './taskModal.module.css';
 
 function TaskModal(props) {
     const {addTask, hideModal, changeEditableTask, task} = props;
 
-    const [title="", setTitle] = useState(task.title);
-    const [description="", setDescription] = useState(task.description);  
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");  
     const [date, setDate] = useState(new Date());   
     const [isTitleValid, setIsTitleValid] = useState(false);
+
+    useEffect(()=>{
+        if(task){
+            setTitle(task.title);
+            setDescription(task.description);
+            setDate(task.date ? new Date(task.date) : new Date())
+        }
+    }, []);
 
     const onAdd = () => {
         if (!title.trim()) {
             return;      
         }
 
-        addTask(title, description, date.toISOString().slice(0, 10));
+        addTask(title, description, formatDate(date));
 
         setTitle("");
         setDescription("");

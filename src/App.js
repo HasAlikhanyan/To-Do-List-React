@@ -10,12 +10,13 @@ import {Row} from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 
 import Title from './components/title/Title';
-import TasksAddForm from './components/tasksAddForm/TasksAddForm';
 import TaskItem from './components/taskItem/TaskItem';
 import DeleteSelectedTasksButton from './components/deleteSelectedTasksButton/DeleteSelectedTasksButton';
 import ConfirmDialog from './components/confirmDialog/ConfirmDialog';
 import TaskModal from './components/taskModal/TaskModal';
 import TaskApi from './api/taskApi';
+import TasksAddSelectResetForms from './components/tasksAddSelectResetForms/TasksAddSelectResetForms';
+import Spinner from './components/spinner/Spinner';
 
 const taskApi = new TaskApi();
 
@@ -25,8 +26,9 @@ function App () {
   const [selectedTasksId, setSelectedTasksId] = useState(new Set());
   const [isOpenConfirmDialogModal, setIsOpenConfirmDialogModal] = useState(false);
   const [isOpenEditableTaskModal, setIsOpenEditableTaskModal] = useState(false);
-  const [editableTask, setEditableTask] = useState({});
+  const [editableTask, setEditableTask] = useState(null);
   const [editableTaskIndex, setEditableTaskIndex] = useState(-1);
+  const [loading, setLoading] = useState(false);
 
 
   useEffect(() => {
@@ -43,12 +45,15 @@ function App () {
         description,
         date
     };
+    
+    setLoading(true);
 
     taskApi
     .add(newTask)
     .then((task) => {
       const tasksCopy = [...tasks, task];
       setTasks(tasksCopy);
+      setLoading(false);
       toast.success('The task has been added successfully!');
     })
     .catch((err) => {
@@ -57,14 +62,26 @@ function App () {
   } 
 
   const deleteItem = (taskId) => {
-    const newTasks = tasks.filter(task => task._id !== taskId);
-    setTasks(newTasks);
-  
-    if(selectedTasksId.has(taskId)) {
-      const newSelectedTasksId = new Set(selectedTasksId);
-      newSelectedTasksId.delete(taskId);
-      setSelectedTasksId(newSelectedTasksId);
-    }   
+    setLoading(true);
+
+    taskApi
+    .delete(taskId)
+    .then(() => {
+      const newTasks = tasks.filter(task => task._id !== taskId);
+      setTasks(newTasks);
+      setLoading(false);
+    
+      if(selectedTasksId.has(taskId)) {
+        const newSelectedTasksId = new Set(selectedTasksId);
+        newSelectedTasksId.delete(taskId);
+        setSelectedTasksId(newSelectedTasksId);
+      } 
+    
+      toast.success('The task has been deleted successfully!');
+    })
+    .catch((err) => {
+      toast.error(err.message);
+    });  
   }
 
   const addSelectedTasksId = (taskId) => {
@@ -77,6 +94,15 @@ function App () {
     }
 
     setSelectedTasksId(newTasksId);
+  }
+
+  const resetSelected = () => {
+    setSelectedTasksId(new Set());
+  }
+
+  const selectAllTasks = () => {
+    const tasksId = tasks.map(task => task._id);
+    setSelectedTasksId(new Set(tasksId));
   }
 
   const toggleConfirmDialogModal = () => {
@@ -98,40 +124,67 @@ function App () {
       title,
       description,
       date,
-      _id,
+      _id
     }
-    const tasksCopy = [...tasks];
-    tasksCopy.splice(editableTaskIndex, 1, changedTask);
 
-    setTasks(tasksCopy);
-    setEditableTask({});
-    setEditableTaskIndex(-1)
+    setLoading(true);
+
+    taskApi
+    .update(changedTask, _id)
+    .then(() => {
+      changedTask[_id] = _id;
+      const tasksCopy = [...tasks];
+      tasksCopy.splice(editableTaskIndex, 1, changedTask);
+  
+      setTasks(tasksCopy);
+      setEditableTask(null);
+      setEditableTaskIndex(-1);
+      setLoading(false);
+    
+      toast.success('The task has been updated successfully!');
+    })
+    .catch((err) => {
+      toast.error(err.message);
+    });  
+
   }
 
 
   const deleteSelectedTasks = () => {
-    const newTasks = [];  
-    tasks.forEach((task)=>{
-          if(!selectedTasksId.has(task._id)){
-            newTasks.push(task);
-          }
-    });
+    setLoading(true);
 
-    setTasks(newTasks);
-    setSelectedTasksId(new Set());
-    setIsOpenConfirmDialogModal(false);
+    taskApi
+    .deleteMany([...selectedTasksId])
+    .then(() => {
+      const newTasks = [];  
+      tasks.forEach((task)=>{
+            if(!selectedTasksId.has(task._id)){
+              newTasks.push(task);
+            }
+      });
+
+      const selectedTasksCount = selectedTasksId.size;
+  
+      setTasks(newTasks);
+      setSelectedTasksId(new Set());
+      setIsOpenConfirmDialogModal(false);
+      setLoading(false);
+      toast.success(`Selected ${selectedTasksCount} ${selectedTasksCount > 1 ? 'tasks have' : 'task has'} been deleted successfully!`);
+    })
+    .catch((err) => {
+      toast.error(err.message);
+    });   
   }
 
     const taskComponents = tasks.map((task, i)=>{
       return (
         <TaskItem 
           key={task._id}
-          title={task.title} 
-          description={task.description}
-          date={task.date}
+          task={task}
           onDelete = {() => deleteItem(task._id)}
           addSelectedTasksId = {() => addSelectedTasksId(task._id)}
           showEditableTaskModal ={() => showEditableTaskModal(task, i)}
+          checked={selectedTasksId.has(task._id)}
         />
       )
     });
@@ -139,8 +192,10 @@ function App () {
     return (
       <Container className="App">
         <Title/>
-        <TasksAddForm 
+        <TasksAddSelectResetForms 
           showEditableTaskModal= {showEditableTaskModal}
+          resetSelected ={resetSelected}
+          selectAllTasks = {selectAllTasks}
         />
         <DeleteSelectedTasksButton 
           tasks={tasks}
@@ -149,8 +204,8 @@ function App () {
           onClick = {toggleConfirmDialogModal}
         />
   
-        <Row className='justify-content-center task-content'>
-          {taskComponents}
+        <Row className='justify-content-center task-content align-items-center'>
+          {loading ? <Spinner/> : taskComponents}
         </Row>
 
         {isOpenConfirmDialogModal && 
