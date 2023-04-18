@@ -70,6 +70,19 @@
     opacity: 0.8;
 }
 
+.statusActive{
+    color: #b7348f;
+    float: right;
+}
+
+.statusPassive{
+    color: rgb(241, 205, 205);
+    float: right;
+}
+.statusFild{
+    cursor: pointer;
+}
+
 
 
 

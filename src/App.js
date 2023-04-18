@@ -43,7 +43,7 @@ function App () {
     const newTask = {
         title,
         description,
-        date
+        date, 
     };
     
     setLoading(true);
@@ -124,7 +124,7 @@ function App () {
       title,
       description,
       date,
-      _id
+      _id,
     }
 
     setLoading(true);

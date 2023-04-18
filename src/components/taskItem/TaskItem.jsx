@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {Col, Card} from 'react-bootstrap';
@@ -12,6 +12,21 @@ import styles from'./taskItem.module.css';
 
 function TaskItem(props) {
     const {task, onDelete, addSelectedTasksId, showEditableTaskModal, checked} = props;
+    const [status, setStatus] = useState("");
+
+    useEffect(()=>{
+        setStatus(task.status);
+    }, []);
+
+    const changeStatus = () => {
+        if(status === "active") {
+            setStatus("passive");
+        } 
+
+        else {
+            setStatus("active");
+        }
+    }
     
     return (
         <Col lg={4} md={6} xs={12} className = 'justify-content-center mt-3'>
@@ -37,8 +52,14 @@ function TaskItem(props) {
                     </Card.Text>
 
                     <Card.Text 
-                        className='mb-1'>
-                        <span className={styles.fildsDescription}>Status:</span> {task.status}
+                        onClick={changeStatus}
+                        className={`mb-1 ${styles.statusFild}`}>
+                        <span className={styles.fildsDescription}
+                        >Status: </span>{status}
+                        <FontAwesomeIcon 
+                            icon={faStar}
+                            className={`fas ${status==="active" ? styles.statusActive : styles.statusPassive}`}>
+                        </FontAwesomeIcon>
                     </Card.Text>
 
                     <Card.Text 
