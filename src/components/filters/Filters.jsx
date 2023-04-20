@@ -31,9 +31,16 @@ function Filters(props) {
         setSearch("");
     }
 
-    useEffect(()=> {
+    const onSearch = () => {
+        if(search.length === 0) {
+            resetFilters();
+        }
         props.onUpdateSearch(search);
-    }, [search])
+    }
+
+    // useEffect(()=> {
+    //     props.onUpdateSearch(search);
+    // }, [search])
 
     return (
         <Accordion className='mb-4'>
@@ -52,7 +59,7 @@ function Filters(props) {
                             value = {search}
                             onChange = {onUpdateSearch}
                         />
-                        {/* <span
+                        <span
                             className={`btn btn-outline-success me-2 ${styles.iconSearch}`}
                             title="Apply filters"
                         >
@@ -61,7 +68,7 @@ function Filters(props) {
                                 className={styles.icon}
                                 onClick={onSearch}
                                 />
-                        </span> */}
+                        </span>
                         <span 
                             className={`btn btn-outline-info ${styles.iconResetFilters}`} 
                             title="Reset filters"
