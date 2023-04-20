@@ -211,10 +211,6 @@ const visibleTasks = searchTasks(tasks, searchValue);
       )
     });
 
-    // const visibleData = this.filterPost(this.searchEmp(data, term), filter);
-
-
-
     return (
       <Container className="App">
         <Title/>

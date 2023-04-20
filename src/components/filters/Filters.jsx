@@ -39,6 +39,13 @@ function Filters(props) {
         props.onUpdateSearch(search);
     }
 
+    const handleInputKeyDown = (event) => {
+        console.log(event.keyCode)
+        if(event.keyCode === 13) {
+            onSearch();
+        }
+    };
+
     return (
         <Accordion className='mb-4'>
             <Accordion.Item 
@@ -55,6 +62,7 @@ function Filters(props) {
                             aria-label="Search"
                             value = {search}
                             onChange = {onUpdateSearch}
+                            onKeyDown={handleInputKeyDown}
                         />
                         <span
                             className={`btn btn-outline-success me-2 ${styles.iconSearch}`}
