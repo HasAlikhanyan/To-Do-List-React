@@ -1,0 +1,12 @@
+.title{
+    opacity: 0.8;
+}
+
+.textArea {
+    height: 70px;
+}
+
+.invalid, .invalid:focus{
+    outline: 1px solid red;
+}
+
