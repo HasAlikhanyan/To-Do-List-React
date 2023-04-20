@@ -185,7 +185,7 @@ function App () {
     setSearchValue(searchValue);
 }
 
-  const searchEmp = (tasks, searchValue) => {
+  const searchTasks = (tasks, searchValue) => {
     if(searchValue.length === 0) {
         return tasks;
     }
@@ -195,7 +195,7 @@ function App () {
     })
 }
 
-const visibleTasks = searchEmp(tasks, searchValue);
+const visibleTasks = searchTasks(tasks, searchValue);
 
     const taskComponents = visibleTasks.map((task)=>{
       return (

@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { Accordion, Form, Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faRefresh } from "@fortawesome/free-solid-svg-icons";
@@ -29,6 +29,7 @@ function Filters(props) {
 
     const resetFilters = () => {
         setSearch("");
+        props.onUpdateSearch("");
     }
 
     const onSearch = () => {
@@ -37,10 +38,6 @@ function Filters(props) {
         }
         props.onUpdateSearch(search);
     }
-
-    // useEffect(()=> {
-    //     props.onUpdateSearch(search);
-    // }, [search])
 
     return (
         <Accordion className='mb-4'>
@@ -62,11 +59,11 @@ function Filters(props) {
                         <span
                             className={`btn btn-outline-success me-2 ${styles.iconSearch}`}
                             title="Apply filters"
+                            onClick={onSearch}
                         >
                             <FontAwesomeIcon 
                                 icon={faSearch} 
                                 className={styles.icon}
-                                onClick={onSearch}
                                 />
                         </span>
                         <span 
