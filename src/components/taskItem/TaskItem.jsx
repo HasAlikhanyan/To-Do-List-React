@@ -1,31 +1,28 @@
-import { memo, useEffect, useState } from 'react';
+import { memo} from 'react';
 import PropTypes from 'prop-types';
 
 import {Col, Card} from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faBoxArchive, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faEdit,
+        faBoxArchive, 
+        faStar,
+        faCheck,
+        faHistory} from '@fortawesome/free-solid-svg-icons';
 
 import {formatDate} from '../../helpers/helpers';
 
 import styles from'./taskItem.module.css';
 
 function TaskItem(props) {
-    const {task, onDelete, addSelectedTasksId, showEditableTaskModal, checked} = props;
-    const [status, setStatus] = useState("");
+    const {task, onDelete, addSelectedTasksId, showEditableTaskModal, checked, onStatusChange} = props;
 
-    useEffect(()=>{
-        setStatus(task.status);
-    }, []);
-
-    const changeStatus = () => {
-        if(status === "active") {
-            setStatus("passive");
-        } 
-
-        else {
-            setStatus("active");
-        }
+    const newTask = {
+        title: task.title, 
+        description: task.description, 
+        date:formatDate(task.date), 
+        created_at: formatDate(task.created_at),
+        _id: task._id
     }
     
     return (
@@ -52,14 +49,13 @@ function TaskItem(props) {
                     </Card.Text>
 
                     <Card.Text 
-                        onClick={changeStatus}
-                        className={`mb-1 ${styles.statusFild}`}>
+                        className='mb-1'>
                         <span className={styles.fildsDescription}
-                        >Status: </span>{status}
-                        <FontAwesomeIcon 
+                        >Status: </span>{task.status}
+                        {task.status === "active" &&   <FontAwesomeIcon 
                             icon={faStar}
-                            className={`fas ${status==="active" ? styles.statusActive : styles.statusPassive}`}>
-                        </FontAwesomeIcon>
+                            className={`fas ${styles.statusActiveStar}`}>
+                        </FontAwesomeIcon>}
                     </Card.Text>
 
                     <Card.Text 
@@ -73,17 +69,36 @@ function TaskItem(props) {
                     </Card.Text>
 
                     <div className={styles.iconsWrapper}>
+                    {
+                        task.status === 'active' ?
+                        <FontAwesomeIcon
+                        className={styles.statusActive} 
+                            icon={faCheck}
+                            title="Mark as done" 
+                            onClick={() => onStatusChange({...newTask, status: 'done'})}>
+                        </FontAwesomeIcon> :
+                        <FontAwesomeIcon 
+                            className={styles.statusDone} 
+                            icon={faHistory}
+                            title="Mark as active" 
+                            variant="info" 
+                            onClick={() => onStatusChange({...newTask, status: 'active'})}>
+                        </FontAwesomeIcon>
+                    }
                         <FontAwesomeIcon  
                             icon={faEdit} 
+                            title="Edit"
                             className={`fas ${styles.editIcon}`}
                             onClick={showEditableTaskModal}
                         />
 
                         <FontAwesomeIcon  
                             icon={faBoxArchive} 
+                            title="Delete"
                             className={`fa-solid fa-xl ${styles.archiveIcon}`}
                             onClick={onDelete}
                         />
+                        
                     </div>
                 </Card.Body>
             </Card>
@@ -96,7 +111,8 @@ TaskItem.propTypes = {
     onDelete: PropTypes.func.isRequired,
     addSelectedTasksId: PropTypes.func.isRequired,
     showEditableTaskModal: PropTypes.func.isRequired,
-    checked:PropTypes.bool.isRequired
+    checked:PropTypes.bool.isRequired,
+    onStatusChange: PropTypes.func.isRequired
 }
     
 export default memo(TaskItem);

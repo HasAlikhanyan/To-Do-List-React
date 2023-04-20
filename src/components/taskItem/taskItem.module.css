@@ -59,29 +59,22 @@
 .archiveIcon:hover{
     cursor: pointer;
     opacity: 0.8;
-}
-
-.editIcon, .statusIcon{
-    font-size: 18px;
 } 
+
+.statusActiveStar{
+    color: #b7348f;
+    float: right;
+}
 
 .editIcon:hover{
     cursor: pointer;
     opacity: 0.8;
 }
 
-.statusActive{
-    color: #b7348f;
-    float: right;
+.editIcon{
+    font-size: 20px;
 }
 
-.statusPassive{
-    color: rgb(241, 205, 205);
-    float: right;
-}
-.statusFild{
-    cursor: pointer;
-}
 
 
 

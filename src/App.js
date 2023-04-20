@@ -16,6 +16,7 @@ import ConfirmDialog from './components/confirmDialog/ConfirmDialog';
 import TaskModal from './components/taskModal/TaskModal';
 import TaskApi from './api/taskApi';
 import TasksAddSelectResetForms from './components/tasksAddSelectResetForms/TasksAddSelectResetForms';
+import Filters from './components/filters/Filters';
 import Spinner from './components/spinner/Spinner';
 
 const taskApi = new TaskApi();
@@ -27,8 +28,8 @@ function App () {
   const [isOpenConfirmDialogModal, setIsOpenConfirmDialogModal] = useState(false);
   const [isOpenEditableTaskModal, setIsOpenEditableTaskModal] = useState(false);
   const [editableTask, setEditableTask] = useState(null);
-  const [editableTaskIndex, setEditableTaskIndex] = useState(-1);
   const [loading, setLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
 
   useEffect(() => {
@@ -58,6 +59,9 @@ function App () {
     })
     .catch((err) => {
       toast.error(err.message);
+    })
+    .finally(()=>{
+      setLoading(false)
     });
   } 
 
@@ -81,7 +85,10 @@ function App () {
     })
     .catch((err) => {
       toast.error(err.message);
-    });  
+    })
+    .finally(()=>{
+      setLoading(false)
+    });;  
   }
 
   const addSelectedTasksId = (taskId) => {
@@ -109,43 +116,38 @@ function App () {
     setIsOpenConfirmDialogModal(!isOpenConfirmDialogModal);
   }
   
-  const showEditableTaskModal = (task, index) => {
+  const showEditableTaskModal = (task) => {
     setIsOpenEditableTaskModal(true);
     setEditableTask(task);
-    setEditableTaskIndex(index);   
   }
 
   const hideEditableTaskModal = () => {
     setIsOpenEditableTaskModal(false);
   }
 
-  const changeEditableTask = (title, description, date, _id) => {
-    const changedTask = {
-      title,
-      description,
-      date,
-      _id,
-    }
+  const changeEditableTask = (task) => {
 
     setLoading(true);
 
     taskApi
-    .update(changedTask, _id)
+    .update(task, task._id)
     .then(() => {
-      changedTask[_id] = _id;
-      const tasksCopy = [...tasks];
-      tasksCopy.splice(editableTaskIndex, 1, changedTask);
+      const newTasks = [...tasks];
+      const foundIndex = newTasks.findIndex((t)=>t._id === task._id);
+      newTasks[foundIndex] = task;
   
-      setTasks(tasksCopy);
+      setTasks(newTasks);
       setEditableTask(null);
-      setEditableTaskIndex(-1);
       setLoading(false);
     
       toast.success('The task has been updated successfully!');
     })
     .catch((err) => {
       toast.error(err.message);
-    });  
+    })
+    .finally(()=>{
+      setLoading(false)
+    });;  
 
   }
 
@@ -173,25 +175,52 @@ function App () {
     })
     .catch((err) => {
       toast.error(err.message);
+    })
+    .finally(()=>{
+      setLoading(false)
     });   
   }
 
-    const taskComponents = tasks.map((task, i)=>{
+  const onUpdateSearch = (searchValue) => {
+    setSearchValue(searchValue);
+}
+
+  const searchEmp = (tasks, searchValue) => {
+    if(searchValue.length === 0) {
+        return tasks;
+    }
+
+    return tasks.filter(task => {
+        return task.title.indexOf(searchValue) > -1 || task.description.indexOf(searchValue) > -1;
+    })
+}
+
+const visibleTasks = searchEmp(tasks, searchValue);
+
+    const taskComponents = visibleTasks.map((task)=>{
       return (
         <TaskItem 
           key={task._id}
           task={task}
           onDelete = {() => deleteItem(task._id)}
           addSelectedTasksId = {() => addSelectedTasksId(task._id)}
-          showEditableTaskModal ={() => showEditableTaskModal(task, i)}
+          showEditableTaskModal ={() => showEditableTaskModal(task)}
           checked={selectedTasksId.has(task._id)}
+          onStatusChange = {changeEditableTask}
         />
       )
     });
 
+    // const visibleData = this.filterPost(this.searchEmp(data, term), filter);
+
+
+
     return (
       <Container className="App">
         <Title/>
+        <Filters 
+          className="mt-2"
+          onUpdateSearch={onUpdateSearch}/>
         <TasksAddSelectResetForms 
           showEditableTaskModal= {showEditableTaskModal}
           resetSelected ={resetSelected}
