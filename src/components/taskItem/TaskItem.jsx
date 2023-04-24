@@ -30,7 +30,7 @@ function TaskItem(props) {
         <Col lg={4} md={6} xs={12} className = 'justify-content-center mt-3'>
             <Card className={styles.task}>
                 <Card.Body className='card-body'>
-                    <div className={`mb-2 mt-2 ${styles.titleCheckboxWrapper}`}>
+                    <div className={`mb-2 ${styles.titleCheckboxWrapper}`}>
                         <Card.Title 
                             className={`${styles.title} ${styles.elipsis}`}>
                             {task.title}

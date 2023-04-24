@@ -6,10 +6,6 @@
     font-size: 16px;
 }
 
-.task-card-body {
-    margin: 30px;
-}
-
 .titleCheckboxWrapper {
     display: flex;
     justify-content: space-between;
