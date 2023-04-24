@@ -126,7 +126,7 @@ function TaskModal(props) {
                     Cancel
                 </Button>
                 <Button 
-                    className={hasSomethingChanged && !!title ? `btn-modal-save-changes btn-style ` : `btn-disabled btn-style`}
+                    className={hasSomethingChanged && !!title.trim() ? `btn-modal-save-changes btn-style ` : `btn-disabled btn-style`}
                     onClick = {task.title ? saveChanges : onAdd}
                 >
                     Save
