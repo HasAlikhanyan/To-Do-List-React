@@ -29,16 +29,27 @@ function App () {
   const [isOpenEditableTaskModal, setIsOpenEditableTaskModal] = useState(false);
   const [editableTask, setEditableTask] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
 
+  const getTasks = (filters)=>{
+    setLoading(true);
 
-  useEffect(() => {
     taskApi
-    .getAll()
+    .getAll(filters)
     .then((tasks) => {
       setTasks(tasks);
+      setLoading(false);
+    })
+    .catch((err) => {
+      toast.error(err.message);
+    })
+    .finally(()=>{
+      setLoading(false)
     });
-  }, []);
+  };
+  
+    useEffect(() => {
+      getTasks();
+    }, []);
 
   const addTask = (title, description, date) => {
     const newTask = {
@@ -148,9 +159,7 @@ function App () {
     .finally(()=>{
       setLoading(false)
     });;  
-
   }
-
 
   const deleteSelectedTasks = () => {
     setLoading(true);
@@ -181,27 +190,15 @@ function App () {
     });   
   }
 
-  const onUpdateSearch = (searchValue) => {
-    setSearchValue(searchValue);
-}
+const onFilter = (filters)=>{
+  getTasks(filters);
+};
 
-  const searchTasks = (tasks, searchValue) => {
-    if(searchValue.length === 0) {
-        return tasks;
-    }
-
-    return tasks.filter(task => {
-        return task.title.indexOf(searchValue) > -1 || task.description.indexOf(searchValue) > -1;
-    })
-}
-
-const visibleTasks = searchTasks(tasks, searchValue);
-
-    const taskComponents = visibleTasks.map((task)=>{
+    const taskComponents = tasks.map((task)=>{
       return (
         <TaskItem 
           key={task._id}
-          task={task}
+          task={task}   
           onDelete = {() => deleteItem(task._id)}
           addSelectedTasksId = {() => addSelectedTasksId(task._id)}
           showEditableTaskModal ={() => showEditableTaskModal(task)}
@@ -216,7 +213,7 @@ const visibleTasks = searchTasks(tasks, searchValue);
         <Title/>
         <Filters 
           className="mt-2"
-          onUpdateSearch={onUpdateSearch}/>
+          onFilter={onFilter}/>
         <TasksAddSelectResetForms 
           showEditableTaskModal= {showEditableTaskModal}
           resetSelected ={resetSelected}
@@ -229,7 +226,7 @@ const visibleTasks = searchTasks(tasks, searchValue);
           onClick = {toggleConfirmDialogModal}
         />
   
-        <Row className='justify-content-center task-content align-items-center'>
+        <Row className='justify-content-center task-content-center align-items-center'>
           {loading ? <Spinner/> : taskComponents}
         </Row>
 

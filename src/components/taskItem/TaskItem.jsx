@@ -8,7 +8,8 @@ import { faEdit,
         faBoxArchive, 
         faStar,
         faCheck,
-        faHistory} from '@fortawesome/free-solid-svg-icons';
+        faHistory,
+        } from '@fortawesome/free-solid-svg-icons';
 
 import {formatDate} from '../../helpers/helpers';
 
@@ -31,20 +32,21 @@ function TaskItem(props) {
                 <Card.Body className='card-body'>
                     <div className={`mb-2 mt-2 ${styles.titleCheckboxWrapper}`}>
                         <Card.Title 
-                            className={styles.title}>
+                            className={`${styles.title} ${styles.elipsis}`}>
                             {task.title}
-                        </Card.Title>
-
+                        </Card.Title> 
                         <input 
                             className={styles.taskCheckbox}
                             type={'checkbox'}
+                            title='Select the task'
                             onChange={addSelectedTasksId}
                             checked={checked}
                             />     
                     </div>
+
                     
                     <Card.Text 
-                        className={`${styles.description}`}>
+                        className={`${styles.description} ${styles.elipsis}`}>
                         {task.description}
                     </Card.Text>
 
@@ -54,7 +56,7 @@ function TaskItem(props) {
                         >Status: </span>{task.status}
                         {task.status === "active" &&   <FontAwesomeIcon 
                             icon={faStar}
-                            className={`fas ${styles.statusActiveStar}`}>
+                            className={`fas mt-1 ${styles.statusActiveStar}`}>
                         </FontAwesomeIcon>}
                     </Card.Text>
 
@@ -68,7 +70,7 @@ function TaskItem(props) {
                         <span className={styles.fildsDescription}>Deadline:</span> {formatDate(task.date)}
                     </Card.Text>
 
-                    <div className={styles.iconsWrapper}>
+                    <div className={`mt-3 ${styles.iconsWrapper}`}>
                     {
                         task.status === 'active' ?
                         <FontAwesomeIcon
@@ -97,9 +99,9 @@ function TaskItem(props) {
                             title="Delete"
                             className={`fa-solid fa-xl ${styles.archiveIcon}`}
                             onClick={onDelete}
-                        />
-                        
+                        />                       
                     </div>
+                    
                 </Card.Body>
             </Card>
         </Col>

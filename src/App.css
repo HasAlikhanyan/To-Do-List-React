@@ -1,7 +1,14 @@
+
+@font-face {
+  font-family: Labrada;
+  src: url("./fonts/Labrada-Medium.ttf");
+}
+
 .App {
   text-align: center;
   margin-top: 50px;
   align-items: center;
+  font-family: Labrada;
 }
 
 .btn{
@@ -58,5 +65,4 @@
 .accordion-button:not(.collapsed) {
   background-color: rgba(241,	230,	239, 0.4);
 }
-
 
