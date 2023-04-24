@@ -11,7 +11,7 @@ import styles from './taskModal.module.css';
 function TaskModal(props) {
     const {addTask, hideModal, changeEditableTask, task} = props;
 
-    const [title, setTitle] = useState("");
+    const [title="", setTitle] = useState("");
     const [description, setDescription] = useState("");  
     const [date, setDate] = useState(new Date());   
     const [isTitleValid, setIsTitleValid] = useState(false);
@@ -126,7 +126,7 @@ function TaskModal(props) {
                     Cancel
                 </Button>
                 <Button 
-                    className={hasSomethingChanged && !!title.trim() ? `btn-modal-save-changes btn-style ` : `btn-disabled btn-style`}
+                    className={hasSomethingChanged && !!title ? `btn-modal-save-changes btn-style ` : `btn-disabled btn-style`}
                     onClick = {task.title ? saveChanges : onAdd}
                 >
                     Save
