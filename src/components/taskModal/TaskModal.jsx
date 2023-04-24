@@ -22,7 +22,7 @@ function TaskModal(props) {
             setDescription(task.description);
             setDate(task.date ? new Date(task.date) : new Date())
         }
-    }, []);
+    }, [task]);
 
     const onAdd = () => {
         if (!title.trim()) {
@@ -48,8 +48,15 @@ function TaskModal(props) {
         if (!title.trim()) {
             return;      
         }
+        
+        const updateTask = {
+            ...task,
+            title,
+            description,
+            date: date.toISOString().slice(0, 10)
+        }
 
-        changeEditableTask(title, description, date.toISOString().slice(0, 10), task._id);
+        changeEditableTask(updateTask);
         setTitle("");
         setDescription("");
         hideModal();

@@ -4,6 +4,10 @@
   align-items: center;
 }
 
+.btn{
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
 .btn-style{
   background-color : #E1B6D5;
   color:black;
@@ -46,3 +50,13 @@
 .hide {
   display: none;
 }
+
+.accordion-button:focus {
+  box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: rgba(241,	230,	239, 0.4);
+}
+
+

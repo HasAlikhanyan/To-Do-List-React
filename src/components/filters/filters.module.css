@@ -1,0 +1,75 @@
+.form{
+    width: calc(100% - 40px);
+}
+
+.filterItem{
+    font-size: 10px;
+}
+.filterItem>legend{
+    font-size: 20px;
+    margin-bottom: 0px;
+}
+
+.myLegend {
+    margin-bottom: 0px;
+}
+
+.iconSearch {
+    background-color : #CC39500C;
+}
+
+.iconSearch:hover {
+    background-color : #CC39500C;
+    opacity: 0.7;
+}
+
+.iconSearch:active {
+    background-color : #CC39500C;
+    opacity: 0.7;
+}
+
+.iconSearch:not(:disabled):not(:disabled):active {
+    background-color : #CC39500C;
+    opacity: 0.7;
+} 
+
+.icon{
+    color: #9b1575;
+}
+
+.icon:hover{
+    opacity: 0.7;;
+}
+
+.iconResetFilters {
+    background-color : #f5e2ef;
+}
+
+.iconResetFilters:hover {
+    background-color : #f5e2ef;
+    opacity: 0.7;
+}
+
+.iconResetFilters:active {
+    background-color : #f5e2ef;
+    opacity: 0.7;
+}
+
+.iconResetFilters:not(:disabled):not(:disabled):active {
+    background-color : #f5e2ef;
+    opacity: 0.7;
+} 
+
+.iconReset {
+    color: black;
+    opacity: 0.8;
+}
+
+.iconReset:hover{
+    opacity: 0.7;;
+}
+
+
+
+
+
