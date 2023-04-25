@@ -37,7 +37,7 @@ function TasksAddForm (props){
                     >
                         Reset selected
                     </Button>
-                </Col>
+                </Col>                
             </Row>
         )
     }

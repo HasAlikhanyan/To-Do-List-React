@@ -141,7 +141,7 @@ function App () {
     setLoading(true);
 
     taskApi
-    .update(task, task._id)
+    .update(task)
     .then(() => {
       const newTasks = [...tasks];
       const foundIndex = newTasks.findIndex((t)=>t._id === task._id);
