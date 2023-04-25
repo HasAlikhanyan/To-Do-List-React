@@ -5,13 +5,25 @@
 .filterItem{
     font-size: 10px;
 }
-.filterItem>legend{
+
+.filterItem>legend, .myLegend{
     font-size: 20px;
     margin-bottom: 0px;
 }
 
-.myLegend {
-    margin-bottom: 0px;
+.datePicker{
+    font-size: 17px;
+    text-align: center;
+    width: 170px;
+    border: 1px solid #b7348f;
+    background-color: rgba(241,	230,	239, 0.4);
+    border-radius: 5px;
+    padding: 2px !important;
+}
+
+.myFormSelect{
+    border: 1px solid #bb529c;
+    background-color: rgba(241,	230,	239, 0.2);
 }
 
 .iconSearch {
@@ -68,6 +80,8 @@
 .iconReset:hover{
     opacity: 0.7;;
 }
+
+
 
 
 

@@ -2,7 +2,7 @@
 const taskApiUrl = process.env.REACT_APP_API_URL + "/task";
 
 class TaskApi { 
-    #request(method, body=null, taskId=null) {
+    #request(method, body=null, taskId=null, filters=null) {
         const params = {
             method,
             headers: {
@@ -17,6 +17,18 @@ class TaskApi {
             url = `${url}/${taskId}`
         }
 
+        if(filters){
+            let query = '?';
+            Object.entries(filters)
+            .forEach(([key, value])=>{
+            if(!value){
+                return;
+            }
+                query+= `${key}=${value}&`;
+            });
+            url+=query;
+        }
+
         return fetch(url, params)
         .then((result) => result.json())
         .then((data) => {
@@ -27,8 +39,8 @@ class TaskApi {
         });
     }
 
-    getAll() {
-        return this.#request("GET");
+    getAll(filters) {
+        return this.#request("GET", null, null, filters);
     }
 
     add(task) {

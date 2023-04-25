@@ -11,16 +11,18 @@ import styles from './taskModal.module.css';
 function TaskModal(props) {
     const {addTask, hideModal, changeEditableTask, task} = props;
 
-    const [title, setTitle] = useState("");
+    const [title="", setTitle] = useState("");
     const [description, setDescription] = useState("");  
     const [date, setDate] = useState(new Date());   
     const [isTitleValid, setIsTitleValid] = useState(false);
+    const [hasSomethingChanged, setHasSomethingChanged] = useState(false);
 
     useEffect(()=>{
         if(task){
             setTitle(task.title);
             setDescription(task.description);
-            setDate(task.date ? new Date(task.date) : new Date())
+            setDate(task.date ? new Date(task.date) : new Date());
+            setIsTitleValid(true);
         }
     }, [task]);
 
@@ -45,7 +47,7 @@ function TaskModal(props) {
     };
 
     const saveChanges = () => {
-        if (!title.trim()) {
+        if (!title.trim() || !hasSomethingChanged) {
             return;      
         }
         
@@ -53,7 +55,7 @@ function TaskModal(props) {
             ...task,
             title,
             description,
-            date: date.toISOString().slice(0, 10)
+            date: formatDate(date)
         }
 
         changeEditableTask(updateTask);
@@ -67,8 +69,20 @@ function TaskModal(props) {
         const trimmedTitle = value.trim();
 
         setIsTitleValid(!!trimmedTitle);
-
         setTitle(value);
+        setHasSomethingChanged(true);
+    }
+
+    const onDescriptionChange = (e)=> {
+        const {value} = e.target;
+
+        setDescription(value);
+        setHasSomethingChanged(true);
+    }
+
+    const onDateChange = (date)=> {
+        setDate(date);
+        setHasSomethingChanged(true);
     }
 
     return (
@@ -93,14 +107,14 @@ function TaskModal(props) {
                     as="textarea"
                     placeholder='description'
                     value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={onDescriptionChange}
                 />
                 <h6 className= 'mx-1'>Deadline</h6>
                 <DatePicker
                     className= 'mx-1'
                     showIcon
                     selected={date}
-                    onChange={setDate}
+                    onChange={onDateChange}
                 />
             </Modal.Body>
         
@@ -112,7 +126,7 @@ function TaskModal(props) {
                     Cancel
                 </Button>
                 <Button 
-                    className={`btn-modal-save-changes btn-style `}
+                    className={hasSomethingChanged && !!title.trim() ? `btn-modal-save-changes btn-style ` : `btn-disabled btn-style`}
                     onClick = {task.title ? saveChanges : onAdd}
                 >
                     Save
