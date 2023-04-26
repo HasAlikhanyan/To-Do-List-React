@@ -14,9 +14,10 @@
 }
 
 .addSingleButton{
-    width: 250px;
-    font-size: 27px;
-    color: rgba(0, 0, 0, 0.7)
+    width: 230px;
+    font-size: 25px;
+    padding: 2px 0 !important;
+    color: rgba(0, 0, 0, 0.7);
 }
 
 @media (max-width: 575px){
