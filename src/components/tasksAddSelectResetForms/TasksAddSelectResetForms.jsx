@@ -11,7 +11,7 @@ function TasksAddForm (props){
             <Row className="justify-content-center">
                 <Col>
                     <Button 
-                        className={`btn-style mb-5 mt-4 ${styles.btnAdd}`}
+                        className={`btn-style mb-5 mt-4 ${styles.btnAdd} ${props.hasTasks ? "" : styles.addSingleButton}`}
                         type="button"
                         onClick={props.showEditableTaskModal}
                     >
@@ -19,7 +19,7 @@ function TasksAddForm (props){
                     </Button>
                 </Col>
 
-                <Col>
+                <Col className={props.hasTasks ? "" : "hide"} >
                     <Button 
                         className={`btn-style mb-5 mt-4 mx-4 ${styles.btnSelectAll}`}
                         type="button"
@@ -29,7 +29,7 @@ function TasksAddForm (props){
                     </Button>
                 </Col>
 
-                <Col>
+                <Col className={props.hasTasks ? "" : "hide"}>
                     <Button 
                         className={`btn-style mb-5 mt-4 ${styles.btnReset}`}
                         type="button"
@@ -37,7 +37,7 @@ function TasksAddForm (props){
                     >
                         Reset selected
                     </Button>
-                </Col>                
+                </Col>            
             </Row>
         )
     }

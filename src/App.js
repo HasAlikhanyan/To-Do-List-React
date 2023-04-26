@@ -210,14 +210,19 @@ const onFilter = (filters)=>{
 
     return (
       <Container className="App">
-        <Title/>
+        <Title
+          hasTasks={tasks.length}
+        />
         <Filters 
           className="mt-2"
-          onFilter={onFilter}/>
+          onFilter={onFilter}
+          hasTasks={tasks.length}
+        />
         <TasksAddSelectResetForms 
           showEditableTaskModal= {showEditableTaskModal}
           resetSelected ={resetSelected}
           selectAllTasks = {selectAllTasks}
+          hasTasks={tasks.length}
         />
         <DeleteSelectedTasksButton 
           tasks={tasks}

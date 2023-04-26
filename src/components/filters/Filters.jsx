@@ -89,6 +89,7 @@ function Filters(props) {
     };
 
     return (
+        props.hasTasks ?
         <Accordion className='mb-4'>
             <Accordion.Item 
                 eventKey="0">
@@ -194,6 +195,7 @@ function Filters(props) {
                 </Accordion.Body>
             </Accordion.Item>
         </Accordion>
+        : null
     );
 }
 

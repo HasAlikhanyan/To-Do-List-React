@@ -1,7 +1,7 @@
-import styles from'./title.module.css'
+import styles from'./title.module.css';
 
-function Title() {
-    return <h1 className={`mb-3 mt-1 ${styles.title}`}>To Do List</h1>
+function Title(props) {
+    return <h1 className={`mb-3 mt-1 ${styles.title} ${props.hasTasks ? "" : styles.newTitle}`}>To Do List</h1>      
 }
 
 export default Title;
