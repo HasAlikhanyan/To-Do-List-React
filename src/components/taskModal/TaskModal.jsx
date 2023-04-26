@@ -87,7 +87,7 @@ function TaskModal(props) {
 
     return (
         <Modal
-            size="md"
+            size="lg"
             show={true}
             onHide={cancelChanges}
         >

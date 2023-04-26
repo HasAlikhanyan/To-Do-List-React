@@ -9,6 +9,7 @@
   margin-top: 20px;
   align-items: center;
   font-family: Labrada;
+  margin: 0 auto;
 }
 
 .btn{
@@ -47,7 +48,18 @@
 } 
 
 .modal {
+  margin: 0 auto;
   margin-top: 100px;
+} 
+
+@media (max-width: 1560px){ 
+  .modal{
+    width: 60%;
+    max-width: 60%;
+    margin: 0 auto;
+    margin-top: 100px;
+    margin-left: 20%;
+  }
 }
 
 .btn-disabled {
@@ -65,4 +77,6 @@
 .accordion-button:not(.collapsed) {
   background-color: rgba(241,	230,	239, 0.4);
 }
+
+
 
