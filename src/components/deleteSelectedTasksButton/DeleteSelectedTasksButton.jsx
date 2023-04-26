@@ -19,7 +19,7 @@ function DeleteSelectedTasksButton (props) {
                     type="button"
                     onClick={showModal}
                 >
-                    Delelete selected
+                    Delete selected
                 </Button> 
             </div>
         </Nav>
