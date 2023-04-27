@@ -87,7 +87,7 @@ function TaskModal(props) {
 
     return (
         <Modal
-            size="md"
+            size="lg"
             show={true}
             onHide={cancelChanges}
         >
@@ -111,7 +111,7 @@ function TaskModal(props) {
                 />
                 <h6 className= 'mx-1'>Deadline</h6>
                 <DatePicker
-                    className= 'mx-1'
+                    className= {`mx-1 ${styles.modalDatePicker}`}
                     showIcon
                     selected={date}
                     onChange={onDateChange}

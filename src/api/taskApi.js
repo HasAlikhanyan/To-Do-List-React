@@ -2,19 +2,20 @@
 const taskApiUrl = process.env.REACT_APP_API_URL + "/task";
 
 class TaskApi { 
-    #request(method, body=null, taskId=null, filters=null) {
-        const params = {
-            method,
+    #request(method, data = {}) {
+        const {body, params, filters} = data;
+        const req = {
+            method: method,
             headers: {
                 "Content-Type": "application/json",
             },
-        }
-        if(body !== null) {
-            params.body = JSON.stringify(body);
+        };
+        if(body) {
+            req.body = JSON.stringify(body);
         }
         let url = taskApiUrl;
-        if(taskId !== null) {
-            url = `${url}/${taskId}`
+        if(params) {
+            url = `${url}/${params}`
         }
 
         if(filters){
@@ -29,7 +30,7 @@ class TaskApi {
             url+=query;
         }
 
-        return fetch(url, params)
+        return fetch(url, req)
         .then((result) => result.json())
         .then((data) => {
             if(data.error) {
@@ -40,23 +41,23 @@ class TaskApi {
     }
 
     getAll(filters) {
-        return this.#request("GET", null, null, filters);
+        return this.#request("GET", {filters: filters});
     }
 
     add(task) {
-        return this.#request("POST", task);
+        return this.#request("POST", {body: task});
     }
 
-    update(task, taskId) {
-        return this.#request("PUT", task, taskId);
+    update(editedTask) {
+        return this.#request("PUT", {body: editedTask, params: editedTask._id});
     }
 
     delete(taskId) {
-        return this.#request("DELETE", null, taskId);    
+        return this.#request("DELETE", {params: taskId});    
     }
 
     deleteMany(taskIds) {
-        return this.#request("PATCH", {tasks: taskIds});    
+        return this.#request("PATCH", {body: {tasks: taskIds}});    
     }
 }
 

@@ -141,7 +141,7 @@ function App () {
     setLoading(true);
 
     taskApi
-    .update(task, task._id)
+    .update(task)
     .then(() => {
       const newTasks = [...tasks];
       const foundIndex = newTasks.findIndex((t)=>t._id === task._id);
@@ -210,14 +210,19 @@ const onFilter = (filters)=>{
 
     return (
       <Container className="App">
-        <Title/>
+        <Title
+          hasTasks={tasks.length}
+        />
         <Filters 
           className="mt-2"
-          onFilter={onFilter}/>
+          onFilter={onFilter}
+          hasTasks={tasks.length}
+        />
         <TasksAddSelectResetForms 
           showEditableTaskModal= {showEditableTaskModal}
           resetSelected ={resetSelected}
           selectAllTasks = {selectAllTasks}
+          hasTasks={tasks.length}
         />
         <DeleteSelectedTasksButton 
           tasks={tasks}
