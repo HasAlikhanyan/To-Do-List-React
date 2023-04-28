@@ -216,8 +216,7 @@ const onFilter = (filters)=>{
         <Filters 
           className="mt-2"
           onFilter={onFilter}
-          hasTasks={tasks.length}
-        />
+        /> 
         <TasksAddSelectResetForms 
           showEditableTaskModal= {showEditableTaskModal}
           resetSelected ={resetSelected}

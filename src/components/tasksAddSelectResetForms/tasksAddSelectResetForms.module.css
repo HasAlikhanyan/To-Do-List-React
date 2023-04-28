@@ -13,13 +13,6 @@
     background-color: #CC39500C;
 }
 
-.addSingleButton{
-    width: 200px;
-    font-size: 23px;
-    padding: 2px 0 !important;
-    color: rgba(0, 0, 0, 0.7);
-}
-
 @media (max-width: 575px){
     .btnAdd, .btnSelectAll, .btnReset{
         margin-top: 10px !important;
