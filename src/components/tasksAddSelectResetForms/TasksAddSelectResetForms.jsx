@@ -11,7 +11,7 @@ function TasksAddForm (props){
             <Row className="justify-content-center">
                 <Col>
                     <Button 
-                        className={`btn-style mb-5 mt-4 ${styles.btnAdd} ${props.hasTasks ? "" : styles.addSingleButton}`}
+                        className={`btn-style mb-5 mt-4 ${styles.btnAdd}`}
                         type="button"
                         onClick={props.showEditableTaskModal}
                     >
