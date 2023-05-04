@@ -1,53 +1,33 @@
 
 .task {
-    height: 260px;
     border: 2px solid rgba(0, 0, 0, 0.4);
     background-color: #CC39500C;
     font-size: 16px;
-}
-
-.titleCheckboxWrapper {
-    display: flex;
-    justify-content: space-between;
-}
-
-.title{
-    opacity: 0.8;
-    height: 27px;
-    font-size: 22px;
-}
-
-.taskCheckbox {
-    width: 27px;
-    height: 27px;
-    border-radius: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    cursor: pointer;  
+    max-width: 60%;
+    margin: 40px auto;
 }
 
 .description{
-    margin: 0 5px 10px 5px;
-    height: 23px;
+    margin: 20px 10px 20px 10px;
+    font-size: 20px;
+    text-align: center;
 }
 
 .title{
+    font-size: 35px;
     opacity: 0.8;
-    height: 27px;
-    width: 85%;
-    padding-left: 40px;
-}
-
-.elipsis{
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+    text-align: center;
 }
 
 .fildsDescription{
-    font-size: 17px;
+    font-size: 23px;
     font-style: italic;
     font-weight: 500;
     color: #b7348f;
+}
+
+.taskDescription{
+    font-size: 23px;
 }
 
 .iconsWrapper{
@@ -70,16 +50,28 @@
     opacity: 0.8;
 }
 
+
+
 .editIcon{
-    font-size: 20px;
+    font-size: 25px;
 }
 
 .statusActive, .statusDone{
-    font-size: 22px;
+    font-size: 27px;
+}
+
+.statusActive:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.statusDone:hover{
+    cursor: pointer;
+    opacity: 0.8;
 }
 
 .showDetails{
-    font-size: 20px;
+    font-size: 25px;
     filter: drop-shadow(3px 3px 2px #b7348f);
     color: black;
     text-decoration: none;
@@ -89,6 +81,24 @@
     cursor: pointer;
     opacity: 0.8;
     color:black;
+}
+
+.taskNotFound{
+    font-size: 35px;
+    filter: drop-shadow(3px 3px 2px #b7348f);
+    margin-top:40px;
+}
+
+.goToHomePage {
+    color: #b7348f;
+    text-decoration: none;
+    font-size: 25px;
+    margin-top:50px;
+}
+
+.goToHomePage:hover {
+    color: #b7348f;
+    opacity: 0.7;
 }
 
 

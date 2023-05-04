@@ -1,0 +1,21 @@
+.wrapper{
+    display: flex;
+    flex-direction: column;
+}
+
+.notFoundImg {
+    width: 440px;
+    height: 400px;
+    margin: 0 auto;
+}
+
+.goToHomePage {
+    color: #b7348f;
+    text-decoration: none;
+    font-size: 30px;
+}
+
+.goToHomePage:hover {
+    color: #b7348f;
+    opacity: 0.7;
+}
