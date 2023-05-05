@@ -11,6 +11,8 @@ import { faEdit,
         faHistory,
         } from '@fortawesome/free-solid-svg-icons';
 
+import {Link} from 'react-router-dom';
+
 import {formatDate} from '../../helpers/helpers';
 
 import styles from'./taskItem.module.css';
@@ -69,6 +71,10 @@ function TaskItem(props) {
                         className='mb-1'>
                         <span className={styles.fildsDescription}>Deadline:</span> {formatDate(task.date)}
                     </Card.Text>
+
+                    <Link to={`/task/${task._id}`} className={styles.showDetails}>
+                        <Card.Text>Show details</Card.Text>
+                    </Link>
 
                     <div className={`mt-3 ${styles.iconsWrapper}`}>
                     {
