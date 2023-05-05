@@ -11,7 +11,7 @@ const activeLinkClassName = ({isActive}) =>isActive ? styles.active : styles.nor
 
 function NavBar() {
     return (
-        <Navbar bg="light" expand="sm">
+        <Navbar bg="light" expand="sm" className="sticky-top bg-body-tertiary">
             <Container fluid className={styles.pagesContainer}>
                 <Navbar.Brand>
                     <NavLink to="/" className={activeLinkClassName}>

@@ -1,15 +1,15 @@
 import { memo } from "react";
 import PropTypes from 'prop-types';
 
-import {Row, Col, Button} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 import styles from'./tasksAddSelectResetForms.module.css';
 
 function TasksAddForm (props){
 
         return (
-            <Row className="justify-content-center">
-                <Col>
+            <div className={styles.buttonsContainer} >
+                <div>
                     <Button 
                         className={`btn-style mb-5 mt-4 ${styles.btnAdd}`}
                         type="button"
@@ -17,9 +17,9 @@ function TasksAddForm (props){
                     >
                         Add New Task
                     </Button>
-                </Col>
+                </div>
 
-                <Col className={props.hasTasks ? "" : "hide"} >
+                <div className={props.hasTasks ? "" : "hide"} >
                     <Button 
                         className={`btn-style mb-5 mt-4 mx-4 ${styles.btnSelectAll}`}
                         type="button"
@@ -27,9 +27,9 @@ function TasksAddForm (props){
                     >
                         Select all
                     </Button>
-                </Col>
+                </div>
 
-                <Col className={props.hasTasks ? "" : "hide"}>
+                <div className={props.hasTasks ? "" : "hide"}>
                     <Button 
                         className={`btn-style mb-5 mt-4 ${styles.btnReset}`}
                         type="button"
@@ -37,8 +37,8 @@ function TasksAddForm (props){
                     >
                         Reset selected
                     </Button>
-                </Col>            
-            </Row>
+                </div>            
+            </div>
         )
     }
 

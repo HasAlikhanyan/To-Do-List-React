@@ -9,6 +9,8 @@ import {
   Routes,
 } from "react-router-dom";
 
+import { ToastContainer } from 'react-toastify';
+
 import ToDo from './pages/toDo/ToDo';
 import Contact from './pages/contact/Contact';
 import About from './pages/about/About';
@@ -59,6 +61,18 @@ function App () {
               ))
             }
           </Routes>
+          <ToastContainer
+            position="bottom-left"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            />
         </main>
       </BrowserRouter>
     );

@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 
 import {Link} from 'react-router-dom';
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import TaskApi from "../../api/taskApi";
 import Spinner from "../../components/spinner/Spinner";
-
+import TaskModal from "../../components/taskModal/TaskModal";
 
 import {Row, Col, Card} from 'react-bootstrap';
 
@@ -29,6 +29,7 @@ const taskApi = new TaskApi();
 function SingleTask() {
     const [task, setTask] = useState(null);
     const [loading, setLoading] = useState(false); 
+    const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
 
     const {taskId} = useParams();
     const history = useNavigate();
@@ -50,24 +51,24 @@ function SingleTask() {
         });
     }, [taskId]);
 
-    // const changeTask = () => {
+    const changeEditableTask = (editedTask) => {
 
-    //     setLoading(true);
+        setLoading(true);
 
-    //     taskApi
-    //     .update(task)
-    //     .then(() => {
-    
-    //     setLoading(false);
-    //         toast.success('The task has been updated successfully!');
-    //     })
-    //     .catch((err) => {
-    //         toast.error(err.message);
-    //     })
-    //     .finally(()=>{
-    //         setLoading(false)
-    //     });;  
-    // }
+        taskApi
+        .update(editedTask)
+        .then((updatedTas) => {
+            setTask(updatedTas);
+            setLoading(false);
+            toast.success('The task has been updated successfully!');
+        })
+        .catch((err) => {
+            toast.error(err.message);
+        })
+        .finally(()=>{
+            setLoading(false);
+        });
+    }
 
     const deleteTask = () => {
         setLoading(true);
@@ -145,7 +146,7 @@ function SingleTask() {
                             className={styles.statusActive} 
                                 icon={faCheck}
                                 title="Mark as done" 
-                                // onClick={() => changeTask({...task, status: 'done'})}
+                                onClick={() => changeEditableTask({_id: taskId, status: 'done'})}
                                 >
                             </FontAwesomeIcon> :
                             <FontAwesomeIcon 
@@ -153,7 +154,7 @@ function SingleTask() {
                                 icon={faHistory}
                                 title="Mark as active" 
                                 variant="info" 
-                                // onClick={() => changeTask({...task, status: 'active'})}
+                                onClick={() => changeEditableTask({_id: taskId, status: 'active'})}
                                 >
                             </FontAwesomeIcon>
                         }
@@ -161,7 +162,7 @@ function SingleTask() {
                                 icon={faEdit} 
                                 title="Edit"
                                 className={`fas ${styles.editIcon}`}
-                                // onClick={showEditableTaskModal}
+                                onClick={()=>setIsEditTaskModalOpen(true)}
                             />
 
                             <FontAwesomeIcon  
@@ -180,19 +181,14 @@ function SingleTask() {
                     <Link to="/" className={styles.goToHomePage}>Go to homepage</Link>
                 </>
             } 
-            
-            <ToastContainer
-                position="bottom-left"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
+            {isEditTaskModalOpen && 
+            <TaskModal
+                hideModal = {()=>setIsEditTaskModalOpen(false)}
+                task = {task}
+                changeEditableTask = {changeEditableTask}
             />
+            }
+            
         </Row>
     )
 }
