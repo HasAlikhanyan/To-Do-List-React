@@ -1,4 +1,4 @@
-import { memo, useState, useEffect} from 'react';
+import { memo, useState, useEffect, useRef} from 'react';
 import Proptypes from 'prop-types';
 import DatePicker from "react-datepicker";
 
@@ -16,6 +16,12 @@ function TaskModal(props) {
     const [date, setDate] = useState(new Date());   
     const [isTitleValid, setIsTitleValid] = useState(false);
     const [hasSomethingChanged, setHasSomethingChanged] = useState(false);
+
+    const titleInputRef = useRef();
+
+    useEffect(()=>{
+        titleInputRef.current.focus();
+    },[])
 
     useEffect(()=>{
         if(task){
@@ -101,6 +107,7 @@ function TaskModal(props) {
                     placeholder='title'
                     value={title}
                     onChange={onTitleChange}
+                    ref={titleInputRef}
                 />
                 <Form.Control
                     className={`mb-3 ${styles.textArea}`}
@@ -137,7 +144,7 @@ function TaskModal(props) {
 }
 
 TaskModal.propTypes = {
-    addTask: Proptypes.func.isRequired,
+    addTask: Proptypes.func,
     hideModal: Proptypes.func.isRequired,
     changeEditableTask: Proptypes.func.isRequired,
     task: Proptypes.object

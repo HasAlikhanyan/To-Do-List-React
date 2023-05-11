@@ -1,0 +1,26 @@
+.formContainer {
+    margin-top:10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.textArea {
+    height: 100px;
+}
+
+.inputStyle {
+    width: 420px;
+    padding: 10px;
+    border: 1px solid rgba(0,0,0,0.7);
+}
+
+.labelStyle {
+    font-size: 20px;
+    color: #b7348f;
+}
+
+.sendInfoButton {
+    width: 200px;
+}

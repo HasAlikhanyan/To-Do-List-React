@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import {Row} from 'react-bootstrap';
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import Title from '../../components/title/Title';
 import TaskItem from '../../components/taskItem/TaskItem';
@@ -23,7 +23,6 @@ function ToDo () {
     const [isOpenEditableTaskModal, setIsOpenEditableTaskModal] = useState(false);
     const [editableTask, setEditableTask] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [showFilterComponent, setFilterComponent] = useState(false);
 
     const getTasks = (filters)=>{
         setLoading(true);
@@ -187,7 +186,6 @@ function ToDo () {
 
     const onFilter = (filters)=>{
         getTasks(filters);
-        setFilterComponent(true);
     };
 
     const taskComponents = tasks.map((task)=>{
@@ -209,11 +207,11 @@ function ToDo () {
             <Title
             hasTasks={tasks.length}
             />
-            {showFilterComponent ?  
+            
             <Filters 
             className="mt-2"
             onFilter={onFilter}
-            />  : null}
+            /> 
         
             <TasksAddSelectResetForms 
             showEditableTaskModal= {showEditableTaskModal}
@@ -249,18 +247,6 @@ function ToDo () {
             />
             }
 
-            <ToastContainer
-            position="bottom-left"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-            />
         </>
     );
 }

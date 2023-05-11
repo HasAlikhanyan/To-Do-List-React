@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 
-import notFoundImage from '../../images/flat-modern-character-trying-connecting-cables-web-online-page-with-404-found-error_372769-2127.webp' 
+import notFoundImage from '../../images/404-found-error-img.webp' 
 import styles from './notFound.module.css';
 
 function NotFound() {

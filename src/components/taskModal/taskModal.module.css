@@ -6,10 +6,6 @@
     height: 70px;
 }
 
-.invalid, .invalid:focus{
-    outline: 1px solid red;
-}
-
 .modalDatePicker{
     width: 150px;
     text-align: center;
