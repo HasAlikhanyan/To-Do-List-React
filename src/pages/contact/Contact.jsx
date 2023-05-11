@@ -1,94 +1,145 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Form, Button } from "react-bootstrap";
+import { toast } from "react-toastify";
+
+import FormApi from "../../api/formApi";
 
 import styles from './contact.module.css';
 
+const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+const formApi = new FormApi();
+
 function Contact() {
-    const nameInputRef = useRef(null);
-    const surnameInputRef = useRef();
-    const emailInputRef = useRef();
-    const phoneNumberInputRef = useRef();
-    const notificationsRef = useRef();
+    const nameRef = useRef(null);
+    const emailRef = useRef();
+    const messageRef = useRef();
+
+    const [emailErrorMessage, setEmailErrorMessage] = useState(null);
+    const [nameErrorMessage, setNameErrorMessage] = useState(null);
+    const [notificationsErrorMessage, setNotificationsErrorMessage] = useState(null);
+
 
     useEffect(()=> {
-        nameInputRef.current.focus();
+        nameRef.current.focus();
     },[])
 
-    const getValue = (event) => {
-        event.preventDefault();
+    const handleSubmit = async () => {
+        const email = emailRef.current.value;
+        const name = nameRef.current.value;
+        const message = messageRef.current.value;
+        if (!name) {
+            setNameErrorMessage("Name is required!");
+        } else {
+            setNameErrorMessage(null);
+        }
 
-        console.log("name:", nameInputRef.current.value);
-        console.log("surname:", surnameInputRef.current.value);
-        console.log("email:", emailInputRef.current.value);
-        console.log("phone number:", phoneNumberInputRef.current.value);
-        console.log("notifications:", notificationsRef.current.value);
+        if (!message) {
+            setNotificationsErrorMessage("Message is required!");
+        }
+        else {
+            setNotificationsErrorMessage(null);
+        }
+    
+        if (!email) {
+            setEmailErrorMessage("Email address is required!");
+            return;
+        } 
+        setEmailErrorMessage(null);  
+    
+        if (!emailRegex.test(email)) {
+            setEmailErrorMessage("Email address is not valid!");
+            return;
+        }
 
-        nameInputRef.current.value="";
-        surnameInputRef.current.value="";
-        emailInputRef.current.value="";
-        phoneNumberInputRef.current.value="";
-        notificationsRef.current.value="";
-    }
+        setEmailErrorMessage(null);
+
+        if (nameErrorMessage) {
+            return;
+        }
+
+        const form = {
+            name,
+            email,
+            message,
+        };
+        try {
+            await formApi.sendForm(form);
+            toast.success("Thank you for contacting us, the form has been sent!");
+            nameRef.current.value = "";
+            messageRef.current.value = "";
+            emailRef.current.value = "";
+        } catch (err) {
+            toast.error(err.message);
+        }
+    };
+    
 
     return (
         <div className={styles.formContainer}>
-            <h2>Contact information</h2>
-            <Form>
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label className={styles.labelStyle}>Name</Form.Label>
+            <h2 className="mb-3">Contact information</h2>
+            <div>
+                <Form.Group className="mb-4">
+                    <Form.Label className={styles.labelStyle}>Full Name*</Form.Label>
                     <Form.Control 
                         type="text" 
-                        placeholder="Enter Name" 
-                        className={styles.inputStyle}
-                        ref={nameInputRef}
+                        placeholder="Input Full Name" 
+                        className={`${styles.inputStyle} ${
+                            nameErrorMessage ? styles.invalid : ""
+                        }`}
+                        ref={nameRef}
                     />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label className={styles.labelStyle}>Surname</Form.Label>
-                    <Form.Control 
-                        type="text" 
-                        placeholder="Enter Surname" 
-                        className={styles.inputStyle}
-                        ref={surnameInputRef}
-                    />
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label className={styles.labelStyle}>Email address</Form.Label>
+                <Form.Group className="mb-4">
+                    <Form.Label className={styles.labelStyle}>Email address*</Form.Label>
                     <Form.Control 
                         type="email" 
-                        placeholder="Enter email" 
-                        className={styles.inputStyle}
-                        ref={emailInputRef}
+                        placeholder="Input email" 
+                        className={`${styles.inputStyle} ${
+                            emailErrorMessage ? styles.invalid : ""
+                        }`}
+                        ref={emailRef}
                     />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label className={styles.labelStyle}>Phone</Form.Label>
+                <Form.Group className="mb-4">
+                    <Form.Label className={styles.labelStyle}>Message*</Form.Label>
                     <Form.Control
-                        type="number" 
-                        placeholder="Enter phone number" 
-                        className={styles.inputStyle}
-                        ref={phoneNumberInputRef}
-                    />
-                </Form.Group>
-
-                <Form.Control
-                    className={`mb-3 ${styles.textArea} ${styles.inputStyle}`}
+                    className={`${styles.inputStyle} ${styles.textArea} ${
+                        notificationsErrorMessage ? styles.invalid : ""
+                    }`}
                     as="textarea"
-                    placeholder="Enter notifications"
-                    ref={notificationsRef}
+                    placeholder="Input message"
+                    ref={messageRef}
                 /> 
+                </Form.Group> 
             
                 <Button 
                     className={`btn-style ${styles.sendInfoButton}`} 
                     type="submit"
-                    onClick={getValue}
+                    onClick={handleSubmit}
                 >
                     Send
                 </Button>
-            </Form>
+
+                {nameErrorMessage && (
+                    <h5 className={`${styles.errorMessage} mt-2`}>
+                        {nameErrorMessage}
+                    </h5>
+                )}
+                {emailErrorMessage && (
+                    <h5 className={`${styles.errorMessage} mt-2`}>
+                        {emailErrorMessage}
+                    </h5>
+                )}
+
+                {notificationsErrorMessage && (
+                    <h5 className={`${styles.errorMessage} mt-2`}>
+                        {notificationsErrorMessage}
+                    </h5>
+                )}
+
+            </div>
         </div>
         
     );
