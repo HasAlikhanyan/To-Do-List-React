@@ -57,8 +57,8 @@ function SingleTask() {
 
         taskApi
         .update(editedTask)
-        .then((updatedTas) => {
-            setTask(updatedTas);
+        .then((updatedTask) => {
+            setTask(updatedTask);
             setLoading(false);
             toast.success('The task has been updated successfully!');
         })
