@@ -14,5 +14,11 @@
     font-weight: 500;
 }
 
+@media (max-width: 700px){
+    .tasksCount{
+        font-size: 20px;
+    }
+}
+
 
 
