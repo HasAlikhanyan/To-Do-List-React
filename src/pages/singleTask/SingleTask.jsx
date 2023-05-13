@@ -50,7 +50,7 @@ function SingleTask() {
         .finally(()=>{
             dispatch(changeLoading(false));
         });
-    }, [taskId]);
+    }, [taskId, dispatch]);
 
     const changeEditableTask = (editedTask) => {
         dispatch(changeLoading(true));

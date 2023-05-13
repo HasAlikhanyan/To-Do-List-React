@@ -31,15 +31,16 @@ function ToDo () {
 
     useEffect(() => {
         getTasks();
+        // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         dispatch(changeTasksAmount(tasks.length));
-    }, [tasks.length]);
+    }, [tasks.length, dispatch]);
 
     useEffect(() => {
         dispatch(changeActiveTasksAmount(activTasks.length));
-    }, [activTasks.length]);
+    }, [activTasks.length, dispatch]);
 
     const getTasks = (filters)=>{
         dispatch(changeLoading(true));
