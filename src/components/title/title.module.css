@@ -3,5 +3,16 @@
     opacity: 0.6;
 }
 
+.tasksCountContainer {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.tasksCount{
+    font-size: 30px;
+    color: #b7348f;
+    font-weight: 500;
+}
+
 
 

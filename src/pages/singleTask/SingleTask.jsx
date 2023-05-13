@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import {Link} from 'react-router-dom';
 
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { changeLoading } from "../../redux/reducers/loaderSlice";
 
 import TaskApi from "../../api/taskApi";
-import Spinner from "../../components/spinner/Spinner";
 import TaskModal from "../../components/taskModal/TaskModal";
 
 import {Row, Col, Card} from 'react-bootstrap';
@@ -28,55 +29,55 @@ const taskApi = new TaskApi();
 
 function SingleTask() {
     const [task, setTask] = useState(null);
-    const [loading, setLoading] = useState(false); 
     const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
 
     const {taskId} = useParams();
     const history = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        setLoading(true);
+        dispatch(changeLoading(true));
 
         taskApi
         .getSingle(taskId)
         .then((task) => {
-        setTask(task);
-        setLoading(false);
+            setTask(task);
+            dispatch(changeLoading(false));
         })
         .catch((err) => {
-        toast.error(err.message);
+            toast.error(err.message);
         })
         .finally(()=>{
-        setLoading(false)
+            dispatch(changeLoading(false));
         });
     }, [taskId]);
 
     const changeEditableTask = (editedTask) => {
-
-        setLoading(true);
+        dispatch(changeLoading(true));
 
         taskApi
         .update(editedTask)
         .then((updatedTask) => {
             setTask(updatedTask);
-            setLoading(false);
+            dispatch(changeLoading(false));
+
             toast.success('The task has been updated successfully!');
         })
         .catch((err) => {
             toast.error(err.message);
         })
         .finally(()=>{
-            setLoading(false);
+            dispatch(changeLoading(false));
         });
     }
 
     const deleteTask = () => {
-        setLoading(true);
+        dispatch(changeLoading(true));
 
         taskApi
         .delete(taskId)
         .then(() => {
-            setLoading(false);        
+            dispatch(changeLoading(false));        
             toast.success('The task has been deleted successfully!');
             history("/");
         })
@@ -84,12 +85,8 @@ function SingleTask() {
             toast.error(err.message);
         })
         .finally(()=>{
-            setLoading(false)
-        });;  
-    }
-
-    if(loading) {
-        return <Spinner/>;
+            dispatch(changeLoading(false));
+        }); 
     }
 
     return (
