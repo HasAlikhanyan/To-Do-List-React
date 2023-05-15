@@ -1,4 +1,7 @@
 import { useEffect, useState, useRef } from "react";
+import { useDispatch } from 'react-redux';
+import { changeLoading } from "../../redux/reducers/loaderSlice";
+
 import { Form, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 
@@ -18,6 +21,7 @@ function Contact() {
     const [nameErrorMessage, setNameErrorMessage] = useState(null);
     const [notificationsErrorMessage, setNotificationsErrorMessage] = useState(null);
 
+    const dispatch = useDispatch();
 
     useEffect(()=> {
         nameRef.current.focus();
@@ -63,14 +67,21 @@ function Contact() {
             message,
         };
         try {
+            dispatch(changeLoading(true));
             await formApi.sendForm(form);
             toast.success("Thank you for contacting us, the form has been sent!");
+            dispatch(changeLoading(false));
+
             nameRef.current.value = "";
             messageRef.current.value = "";
             emailRef.current.value = "";
-        } catch (err) {
+        } 
+        catch (err) {
             toast.error(err.message);
         }
+        finally { 
+            dispatch(changeLoading(false));
+        };
     };
     
 
