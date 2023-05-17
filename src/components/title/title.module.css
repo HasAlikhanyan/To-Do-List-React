@@ -3,5 +3,22 @@
     opacity: 0.6;
 }
 
+.tasksCountContainer {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.tasksCount{
+    font-size: 30px;
+    color: #b7348f;
+    font-weight: 500;
+}
+
+@media (max-width: 700px){
+    .tasksCount{
+        font-size: 20px;
+    }
+}
+
 
 
